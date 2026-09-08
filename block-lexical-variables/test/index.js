@@ -83,10 +83,21 @@ const START_STATE = `<xml xmlns="https://developers.google.com/blockly/xml">
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
   LexicalVariablesPlugin.init(workspace, {disableInvalidBlocks: true});
-  Blockly.Xml.domToWorkspace(
-    Blockly.utils.xml.textToDom(START_STATE),
-    workspace,
-  );
+
+  // The playground restores whatever was on the workspace last time, and it
+  // does so after this function returns. Seeding the start state here
+  // unconditionally would either be overwritten immediately or throw away
+  // work from the previous session, so wait for the restore to happen and
+  // only fill the workspace if it turns out to be empty.
+  setTimeout(() => {
+    if (!workspace.getAllBlocks().length) {
+      Blockly.Xml.domToWorkspace(
+        Blockly.utils.xml.textToDom(START_STATE),
+        workspace,
+      );
+    }
+  }, 0);
+
   // Parked so the workspace can be poked at from the console.
   globalThis.workspace = workspace;
   return workspace;
