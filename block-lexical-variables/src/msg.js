@@ -12,13 +12,16 @@
 
 import * as Blockly from 'blockly/core';
 
-Blockly.Msg['LANG_VARIABLES_GLOBAL_DECLARATION_TITLE_INIT'] =
-    'initialize global';
+// LANG_VARIABLES_GLOBAL_DECLARATION_TITLE_INIT and ..._TOOLTIP are not set
+// here. Both are assigned again further down, with the initialize_global
+// group, and the later assignment is the one that takes effect — so the
+// values that used to sit here ('initialize global', and 'Creates a global
+// variable and gives it the value of the attached blocks.') never reached a
+// block. global_declaration and initialize_global share these two keys and
+// therefore always render the same text.
 Blockly.Msg['LANG_VARIABLES_GLOBAL_DECLARATION_NAME'] = 'name';
 Blockly.Msg['LANG_VARIABLES_GLOBAL_DECLARATION_TO'] = 'to';
 Blockly.Msg['LANG_VARIABLES_GLOBAL_DECLARATION_COLLAPSED_TEXT'] = 'global';
-Blockly.Msg['LANG_VARIABLES_GLOBAL_DECLARATION_TOOLTIP'] =
-    'Creates a global variable and gives it the value of the attached blocks.';
 Blockly.Msg['LANG_VARIABLES_GLOBAL_PREFIX'] = 'global';
 Blockly.Msg['LANG_VARIABLES_GET_TITLE_GET'] = 'get';
 Blockly.Msg['LANG_VARIABLES_GET_COLLAPSED_TEXT'] = 'get';
