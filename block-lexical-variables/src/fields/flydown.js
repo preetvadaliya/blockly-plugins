@@ -14,7 +14,7 @@
 'use strict';
 
 import * as Blockly from 'blockly/core';
-import {FieldFlydown} from './field_flydown.js';
+import {FieldFlydown} from './field_flydown';
 
 /**
  * Class for a flydown.

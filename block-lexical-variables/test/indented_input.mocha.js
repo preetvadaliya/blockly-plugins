@@ -19,7 +19,7 @@
 
 import * as Blockly from 'blockly/core';
 
-import {IndentedInput} from '../src/inputs/indented_input.js';
+import {IndentedInput} from '../src/inputs/indented_input';
 
 import chai from 'chai';
 

@@ -30,7 +30,7 @@ import '../src/fields/field_parameter_flydown';
 import '../src/fields/field_procedurename';
 import '../src/blocks/lexical-variables';
 import '../src/blocks/controls';
-import '../src/blocks/variable-get-set.js';
+import '../src/blocks/variable-get-set';
 import '../src/procedure_database';
 import '../src/blocks/procedures';
 

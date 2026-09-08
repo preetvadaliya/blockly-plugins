@@ -1,6 +1,6 @@
 'use strict';
 
-import * as Shared from '../shared.js';
+import * as Shared from '../shared';
 import * as Blockly from 'blockly/core';
 import * as pkg from 'blockly/javascript';
 

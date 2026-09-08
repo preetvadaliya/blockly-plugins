@@ -5,26 +5,26 @@
 
 'use strict';
 
-import {registerCss} from '../src/css.js';
-import './utilities.js';
-import './workspace.js';
-import './inputs/indented_input.js';
-import './procedure_utils.js';
-import {Flydown} from './fields/flydown.js';
-import {FieldFlydown} from "./fields/field_flydown.js";
-import {FieldGlobalFlydown} from "./fields/field_global_flydown.js";
-import './fields/field_nocheck_dropdown.js';
-import {FieldLexicalVariable, LexicalVariable} from './fields/field_lexical_variable.js';
-import {FieldParameterFlydown} from './fields/field_parameter_flydown.js';
-import {FieldProcedureName} from './fields/field_procedurename.js';
-import {FieldNoCheckDropdown} from './fields/field_nocheck_dropdown.js';
-import {NameSet} from './nameSet.js';
-import * as Shared from './shared.js';
-import {Substitution} from './substitution.js';
-import './procedure_database.js';
+import {registerCss} from '../src/css';
+import './utilities';
+import './workspace';
+import './inputs/indented_input';
+import './procedure_utils';
+import {Flydown} from './fields/flydown';
+import {FieldFlydown} from "./fields/field_flydown";
+import {FieldGlobalFlydown} from "./fields/field_global_flydown";
+import './fields/field_nocheck_dropdown';
+import {FieldLexicalVariable, LexicalVariable} from './fields/field_lexical_variable';
+import {FieldParameterFlydown} from './fields/field_parameter_flydown';
+import {FieldProcedureName} from './fields/field_procedurename';
+import {FieldNoCheckDropdown} from './fields/field_nocheck_dropdown';
+import {NameSet} from './nameSet';
+import * as Shared from './shared';
+import {Substitution} from './substitution';
+import './procedure_database';
 import * as Blockly from 'blockly/core';
-import {GerasRenderer} from './renderers/geras.js';
-import {lexicalVariableScopeMixin} from './mixins.js'
+import {GerasRenderer} from './renderers/geras';
+import {lexicalVariableScopeMixin} from './mixins'
 
 export class LexicalVariablesPlugin {
 

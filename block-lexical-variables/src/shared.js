@@ -1,5 +1,5 @@
 import * as Blockly from 'blockly/core';
-import './msg.js';
+import './msg';
 
 /* [Added by paulmw in patch 15]
    There are three ways that you can change how lexical variables

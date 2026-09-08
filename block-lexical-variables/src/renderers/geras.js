@@ -4,7 +4,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0
 
 import * as Blockly from 'blockly/core';
-import {IndentedInput} from '../inputs/indented_input.js';
+import {IndentedInput} from '../inputs/indented_input';
 
 /**
  * The IndentedInputMeasurable provides the dimensions of the

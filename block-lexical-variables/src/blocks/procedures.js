@@ -78,22 +78,22 @@
 'use strict';
 
 import * as Blockly from 'blockly/core';
-import {FieldProcedureName} from '../fields/field_procedurename.js';
-import {ErrorCheckers} from '../warningHandler.js';
-import * as ProcedureUtils from '../procedure_utils.js';
-import {FieldParameterFlydown} from '../fields/field_parameter_flydown.js';
-import {FieldFlydown} from '../fields/field_flydown.js';
+import {FieldProcedureName} from '../fields/field_procedurename';
+import {ErrorCheckers} from '../warningHandler';
+import * as ProcedureUtils from '../procedure_utils';
+import {FieldParameterFlydown} from '../fields/field_parameter_flydown';
+import {FieldFlydown} from '../fields/field_flydown';
 import {
   FieldLexicalVariable,
   LexicalVariable,
-} from '../fields/field_lexical_variable.js';
-import {FieldNoCheckDropdown} from '../fields/field_nocheck_dropdown.js';
-import * as Utilities from '../utilities.js';
-import * as Shared from '../shared.js';
-import {Substitution} from '../substitution.js'
-import {NameSet} from '../nameSet.js';
-import {isLegacyExtraState, loadLegacyExtraState} from '../extra_state.js';
-import '../msg.js';
+} from '../fields/field_lexical_variable';
+import {FieldNoCheckDropdown} from '../fields/field_nocheck_dropdown';
+import * as Utilities from '../utilities';
+import * as Shared from '../shared';
+import {Substitution} from '../substitution'
+import {NameSet} from '../nameSet';
+import {isLegacyExtraState, loadLegacyExtraState} from '../extra_state';
+import '../msg';
 
 Blockly.Blocks['procedures_defnoreturn'] = {
   // Define a procedure with no return value.

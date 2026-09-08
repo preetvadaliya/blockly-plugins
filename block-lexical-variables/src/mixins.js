@@ -1,7 +1,7 @@
 import * as Blockly from 'blockly/core';
-import * as Shared from "./shared.js";
-import {FieldLexicalVariable, LexicalVariable} from "./fields/field_lexical_variable.js";
-import {Substitution} from "./substitution.js";
+import * as Shared from "./shared";
+import {FieldLexicalVariable, LexicalVariable} from "./fields/field_lexical_variable";
+import {Substitution} from "./substitution";
 
 export const mixin = function (target, source) {
     for (const prop in source) {

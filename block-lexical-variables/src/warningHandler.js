@@ -12,7 +12,7 @@
 'use strict';
 
 import * as Blockly from 'blockly/core';
-import './msg.js';
+import './msg';
 
 export default class WarningHandler {
   /**

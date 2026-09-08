@@ -12,10 +12,10 @@
 'use strict';
 
 import * as Blockly from 'blockly/core';
-import '../msg.js';
-import {FieldFlydown} from './field_flydown.js';
-import {LexicalVariable} from './field_lexical_variable.js';
-import '../blocks/variable-get-set.js';
+import '../msg';
+import {FieldFlydown} from './field_flydown';
+import {LexicalVariable} from './field_lexical_variable';
+import '../blocks/variable-get-set';
 
 /**
  * Class for a clickable global variable declaration field.

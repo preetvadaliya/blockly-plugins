@@ -14,7 +14,7 @@
 'use strict';
 
 import * as Blockly from 'blockly/core';
-import * as Utilities from '../utilities.js';
+import * as Utilities from '../utilities';
 
 /**
  * Class for a clickable parameter field.

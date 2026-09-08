@@ -37,11 +37,11 @@
 'use strict';
 
 import * as Blockly from 'blockly/core';
-import '../msg.js';
-import {FieldParameterFlydown} from '../fields/field_parameter_flydown.js';
-import {FieldFlydown} from '../fields/field_flydown.js';
-import * as Utilities from '../utilities.js';
-import {lexicalVariableScopeMixin} from '../mixins.js';
+import '../msg';
+import {FieldParameterFlydown} from '../fields/field_parameter_flydown';
+import {FieldFlydown} from '../fields/field_flydown';
+import * as Utilities from '../utilities';
+import {lexicalVariableScopeMixin} from '../mixins';
 
 Blockly.Blocks['controls_forRange'] = {
   // For range.

@@ -1,15 +1,15 @@
 'use strict';
 
 import * as Blockly from 'blockly/core';
-import '../inputs/indented_input.js';
-import '../msg.js';
-import {ErrorCheckers} from '../warningHandler.js';
+import '../inputs/indented_input';
+import '../msg';
+import {ErrorCheckers} from '../warningHandler';
 import {
     FieldLexicalVariable,
     LexicalVariable,
-} from '../fields/field_lexical_variable.js';
-import * as Shared from '../shared.js';
-import {NameSet} from "../nameSet.js";
+} from '../fields/field_lexical_variable';
+import * as Shared from '../shared';
+import {NameSet} from "../nameSet";
 
 /**
  * Prototype bindings for a variable getter block.

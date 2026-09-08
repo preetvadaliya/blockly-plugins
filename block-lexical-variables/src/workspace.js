@@ -1,6 +1,6 @@
 import * as Blockly from 'blockly/core';
-import WarningHandler from './warningHandler.js';
-import {ProcedureDatabase} from './procedure_database.js';
+import WarningHandler from './warningHandler';
+import {ProcedureDatabase} from './procedure_database';
 
 // This ia a bit kludgey and we'll need a better way to make this play nice with
 // apps that already define some of these things (e.g. App Inventor).  It's also

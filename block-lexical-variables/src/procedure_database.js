@@ -13,8 +13,8 @@
 'use strict';
 
 import * as Blockly from 'blockly/core';
-import './msg.js';
-import * as ProcedureUtils from './procedure_utils.js';
+import './msg';
+import * as ProcedureUtils from './procedure_utils';
 
 /**
  * ProcedureDatabase provides a per-workspace data store for manipulating

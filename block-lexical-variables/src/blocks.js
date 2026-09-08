@@ -3,7 +3,7 @@
 // Released under the Apache License, Version 2.0
 // http://www.apache.org/licenses/LICENSE-2.0
 
-import './blocks/lexical-variables.js';
-import './blocks/controls.js';
-import './blocks/procedures.js';
-import './blocks/variable-get-set.js';
+import './blocks/lexical-variables';
+import './blocks/controls';
+import './blocks/procedures';
+import './blocks/variable-get-set';

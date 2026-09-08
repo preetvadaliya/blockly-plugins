@@ -89,26 +89,26 @@ function myStringify (obj) {
 'use strict';
 
 import * as Blockly from 'blockly/core';
-import '../inputs/indented_input.js';
-import '../msg.js';
-import {ErrorCheckers} from '../warningHandler.js';
-import {FieldParameterFlydown} from '../fields/field_parameter_flydown.js';
-import {FieldFlydown} from '../fields/field_flydown.js';
-import {FieldGlobalFlydown} from '../fields/field_global_flydown.js';
+import '../inputs/indented_input';
+import '../msg';
+import {ErrorCheckers} from '../warningHandler';
+import {FieldParameterFlydown} from '../fields/field_parameter_flydown';
+import {FieldFlydown} from '../fields/field_flydown';
+import {FieldGlobalFlydown} from '../fields/field_global_flydown';
 import {
   FieldLexicalVariable,
   LexicalVariable,
-} from '../fields/field_lexical_variable.js';
-import * as Utilities from '../utilities.js';
-import * as Shared from '../shared.js';
-import {NameSet} from "../nameSet.js";
-import {Substitution} from '../substitution.js'
-import {lexicalVariableScopeMixin} from "../mixins.js";
+} from '../fields/field_lexical_variable';
+import * as Utilities from '../utilities';
+import * as Shared from '../shared';
+import {NameSet} from "../nameSet";
+import {Substitution} from '../substitution'
+import {lexicalVariableScopeMixin} from "../mixins";
 import {
   extraStateText,
   isLegacyExtraState,
   loadLegacyExtraState,
-} from '../extra_state.js';
+} from '../extra_state';
 
 delete Blockly.Blocks['global_declaration'];
 /**

@@ -5,8 +5,8 @@
 
 'use strict';
 
-import {LexicalVariablesPlugin} from './core.js';
-import './blocks.js';
-import './generators.js';
+import {LexicalVariablesPlugin} from './core';
+import './blocks';
+import './generators';
 
 export {LexicalVariablesPlugin};

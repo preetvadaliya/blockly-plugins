@@ -12,12 +12,12 @@
 'use strict';
 
 import * as Blockly from 'blockly/core';
-import '../msg.js';
-import '../instrument.js';
-import * as Shared from '../shared.js';
-import * as Instrument from '../instrument.js';
-import {NameSet} from "../nameSet.js";
-import {Substitution} from '../substitution.js'
+import '../msg';
+import '../instrument';
+import * as Shared from '../shared';
+import * as Instrument from '../instrument';
+import {NameSet} from "../nameSet";
+import {Substitution} from '../substitution'
 
 /**
  * Lyn's History:

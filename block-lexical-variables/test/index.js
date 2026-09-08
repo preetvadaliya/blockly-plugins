@@ -22,8 +22,8 @@
 import * as Blockly from 'blockly/core';
 import * as En from 'blockly/msg/en';
 import {createPlayground} from '@blockly/dev-tools';
-import {LexicalVariablesPlugin} from '../src/index.js';
-import '../src/blocks.js';
+import {LexicalVariablesPlugin} from '../src/index';
+import '../src/blocks';
 
 /**
  * Blocks shown in the catch-all category.

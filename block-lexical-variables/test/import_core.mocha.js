@@ -20,12 +20,12 @@ import chai from 'chai';
 
 suite('ImportCore', function () {
   test('importing the plugin core does not require a DOM', async function () {
-    const core = await import('../src/core.js');
+    const core = await import('../src/core');
     chai.assert.isFunction(core.LexicalVariablesPlugin.init);
   });
 
   test('the plugin entry point exports the plugin', async function () {
-    const index = await import('../src/index.js');
+    const index = await import('../src/index');
     chai.assert.isFunction(index.LexicalVariablesPlugin.init);
   });
 });
