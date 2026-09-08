@@ -104,6 +104,11 @@ import * as Shared from '../shared.js';
 import {NameSet} from "../nameSet.js";
 import {Substitution} from '../substitution.js'
 import {lexicalVariableScopeMixin} from "../mixins.js";
+import {
+  extraStateText,
+  isLegacyExtraState,
+  loadLegacyExtraState,
+} from '../extra_state.js';
 
 delete Blockly.Blocks['global_declaration'];
 /**
@@ -387,6 +392,24 @@ Blockly.Blocks['local_declaration_statement'] = {
     this.updateDeclarationInputs_(this.localNames_); // add declarations; inits
     // are undefined
   },
+  saveExtraState: function() {
+    return {localNames: [...this.localNames_]};
+  },
+  loadExtraState: function(state) {
+    // Workspace JSON written before this hook existed stored the mutation as
+    // XML text, and Blockly hands that straight here without a type check.
+    if (isLegacyExtraState(state)) {
+      loadLegacyExtraState(this, state);
+      return;
+    }
+    // The emptiness guard mirrors domToMutation: a block loaded from state
+    // that declares nothing keeps the default name it was created with,
+    // rather than ending up with no declarations at all.
+    if (state.localNames && state.localNames.length > 0) {
+      this.localNames_ = [...state.localNames];
+    }
+    this.updateDeclarationInputs_(this.localNames_);
+  },
   updateDeclarationInputs_: function(names, inits) {
     // Modify this block to replace existing initializers by new declaration
     // inputs created from names and inits. If inits is undefined, treat all
@@ -599,7 +622,10 @@ Blockly.Blocks['local_declaration_statement'] = {
     }
   },
   renameBound: function(boundSubstitution, freeSubstitution) {
-    const oldMutation = Blockly.Xml.domToText(this.mutationToDom());
+    // Recorded through extraStateText, not as mutation XML. BlockChange.run
+    // parses this back with JSON.parse whenever the block has
+    // loadExtraState, so XML text here would throw a SyntaxError on undo.
+    const oldMutation = extraStateText(this);
     const localNames = this.declaredNames();
     for (let i = 0; i < localNames.length; i++) {
       // This is LET semantics, not LET* semantics, and needs to change!
@@ -612,7 +638,7 @@ Blockly.Blocks['local_declaration_statement'] = {
         .extend(paramSubstitution);
     LexicalVariable.renameFree(
         this.getInputTargetBlock(this.bodyInputName), newFreeSubstitution);
-    const newMutation = Blockly.Xml.domToText(this.mutationToDom());
+    const newMutation = extraStateText(this);
     if (Blockly.Events.isEnabled()) {
       Blockly.Events.fire(
           new Blockly.Events.BlockChange(this, 'mutation', null, oldMutation,
@@ -729,6 +755,11 @@ Blockly.Blocks['local_declaration_expression'] = {
   onchange: Blockly.Blocks.local_declaration_statement.onchange,
   mutationToDom: Blockly.Blocks.local_declaration_statement.mutationToDom,
   domToMutation: Blockly.Blocks.local_declaration_statement.domToMutation,
+  // Both halves of each pair have to be picked up together. Blockly validates
+  // that for a registered mutator but not for a block defined this way, so
+  // aliasing only one of these would leave this block silently XML-only.
+  saveExtraState: Blockly.Blocks.local_declaration_statement.saveExtraState,
+  loadExtraState: Blockly.Blocks.local_declaration_statement.loadExtraState,
   updateDeclarationInputs_:
     Blockly.Blocks.local_declaration_statement.updateDeclarationInputs_,
   parameterFlydown: Blockly.Blocks.local_declaration_statement.parameterFlydown,
