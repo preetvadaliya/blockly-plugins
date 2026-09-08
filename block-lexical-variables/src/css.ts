@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * The style element holding this plugin's rules.
  *
@@ -8,17 +6,15 @@
  * there is no DOM — Node, SSR, or a test runner — even when nothing is ever
  * rendered. Creating it here keeps the single-element behaviour while making
  * the import side-effect free.
- *
- * @type {?HTMLStyleElement}
  */
-let cssNode = null;
+let cssNode: HTMLStyleElement | null = null;
 
 /**
  * Register our extra CSS with Blockly.
  *
- * @param {string} selector The CSS selector for the Blockly workspace.
+ * @param selector The CSS selector for the Blockly workspace.
  */
-export function registerCss(selector) {
+export function registerCss(selector: string): void {
   if (!cssNode) {
     cssNode = document.createElement('style');
     document.head.appendChild(cssNode);

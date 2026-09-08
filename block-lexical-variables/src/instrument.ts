@@ -23,9 +23,10 @@ export let isOn = false; // [lyn, 04/08/14] Turn off for production
 
 /**
  * Turn instrumentation on/off.
- * @param bool
+ *
+ * @param bool Whether instrumentation should be on.
  */
-export const setOn = function (bool) {
+export const setOn = function (bool: boolean): void {
   isOn = bool;
 };
 
@@ -81,7 +82,7 @@ export const useLynGetGlobalNamesFix = true;
 export const useLynCacheGlobalNames = true;
 
 /** [lyn, 04/05/14] Stats to track improvements in slow removal */
-export const stats = {};
+export const stats: {[statName: string]: number} = {};
 
 export const statNames = [
   'totalTime',
@@ -120,21 +121,21 @@ export const statNames = [
   'expandCollapsedTime',
 ];
 
-export const initializeStats = function (name) {
+export const initializeStats = function (name: string): void {
   if (isOn) {
     console.log('Initializing stats for ' + name);
-    const names = statNames;
-    const stats = stats;
-    for (let i = 0, name; (name = names[i]); i++) {
-      stats[name] = 0;
+    // The local `const stats = stats` that used to stand here shadowed the
+    // module-level stats with itself, so this body threw a ReferenceError
+    // from the temporal dead zone. It never ran: isOn is false and nothing
+    // calls this, which is why the throw was never observed.
+    for (let i = 0, statName; (statName = statNames[i]); i++) {
+      stats[statName] = 0;
     }
   }
 };
 
-export const displayStats = function (name) {
+export const displayStats = function (name: string): void {
   if (isOn) {
-    const names = statNames;
-    const stats = stats;
     console.log('Displaying stats for ' + name + ':');
     console.log('  Instrument.useRenderDown=' + useRenderDown);
     console.log('  Instrument.useIsRenderingOn=' + useIsRenderingOn);
@@ -156,13 +157,16 @@ export const displayStats = function (name) {
     console.log(
       '  Instrument.useLynCacheGlobalNames=' + useLynCacheGlobalNames,
     );
-    for (let i = 0, name; (name = names[i]); i++) {
-      console.log('  ' + name + '=' + stats[name]);
+    for (let i = 0, statName; (statName = statNames[i]); i++) {
+      console.log('  ' + statName + '=' + stats[statName]);
     }
   }
 };
 
-export const timer = function (thunk, callback) {
+export const timer = function <T, R>(
+  thunk: () => T,
+  callback: (result: T, elapsedMs: number) => R,
+): R {
   if (isOn) {
     const start = new Date().getTime();
     const result = thunk();

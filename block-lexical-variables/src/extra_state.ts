@@ -44,21 +44,28 @@ import * as Blockly from 'blockly/core';
  * Legacy payloads are the XML text of a mutation element; current ones are
  * plain objects.
  *
- * @param {?} state The extra state handed to loadExtraState.
- * @return {boolean} True if the state is legacy XML text.
+ * @param state The extra state handed to loadExtraState.
+ * @return True if the state is legacy XML text.
  */
-export function isLegacyExtraState(state) {
+export function isLegacyExtraState(state: unknown): state is string {
   return typeof state === 'string';
 }
 
 /**
  * Applies extra state that was written as XML text.
  *
- * @param {!Blockly.Block} block The block to apply the state to.
- * @param {string} xmlText The mutation element as text.
+ * @param block The block to apply the state to.
+ * @param xmlText The mutation element as text.
  */
-export function loadLegacyExtraState(block, xmlText) {
-  block.domToMutation(Blockly.utils.xml.textToDom(xmlText));
+export function loadLegacyExtraState(
+  block: Blockly.Block,
+  xmlText: string,
+): void {
+  // Asserted rather than guarded: every caller is the loadExtraState of a
+  // block that also defines domToMutation, and a block without one should
+  // fail loudly here exactly as it did before, rather than silently ignoring
+  // its own saved state.
+  block.domToMutation!(Blockly.utils.xml.textToDom(xmlText));
 }
 
 /**
@@ -69,10 +76,10 @@ export function loadLegacyExtraState(block, xmlText) {
  * here is what BlockChange.run will later parse back, so the two have to agree
  * on the format or undo breaks.
  *
- * @param {!Blockly.Block} block The block whose state to serialize.
- * @return {string} The state as text, or the empty string if there is none.
+ * @param block The block whose state to serialize.
+ * @return The state as text, or the empty string if there is none.
  */
-export function extraStateText(block) {
+export function extraStateText(block: Blockly.Block): string {
   if (block.saveExtraState) {
     const state = block.saveExtraState(true);
     return state ? JSON.stringify(state) : '';

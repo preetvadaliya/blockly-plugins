@@ -39,8 +39,6 @@ export const usePrefixInCode = false;
 /**
  * The global keyword. Users may be shown a translated keyword instead but this
  * is the internal token used to identify global variables.
- * @type {string}
- * @const
  */
 // used internally to identify global variables; not translated
 export const GLOBAL_KEYWORD = 'global';
@@ -61,18 +59,20 @@ export const prefixSeparator = '_';
 
 // Curried for convenient use in field_lexical_variable.js
 // e.g., "param x" vs "x"
-export const possiblyPrefixMenuNameWith = function (prefix) {
-  return function (name) {
+export const possiblyPrefixMenuNameWith = function (
+  prefix: string,
+): (name: string) => string {
+  return function (name: string): string {
     return (showPrefixToUser ? prefix + menuSeparator : '') + name;
   };
 };
 
-export const prefixGlobalMenuName = function (name) {
+export const prefixGlobalMenuName = function (name: string): string {
   return Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX + menuSeparator + name;
 };
 
 // Return a list of (1) prefix (if it exists, "" if not) and (2) unprefixed name
-export const unprefixName = function (name) {
+export const unprefixName = function (name: string): [string, string] {
   if (
     name.indexOf(Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX + menuSeparator) === 0
   ) {
@@ -110,8 +110,10 @@ export const unprefixName = function (name) {
 };
 
 // Curried for convenient use in generators/lexical-variables.js
-export const possiblyPrefixGeneratedVarName = function (prefix) {
-  return function (name) {
+export const possiblyPrefixGeneratedVarName = function (
+  prefix: string,
+): (name: string) => string {
+  return function (name: string): string {
     // e.g., "param_x" vs "x"
     return (usePrefixInCode ? prefix + prefixSeparator : '') + name;
   };
