@@ -5,7 +5,7 @@
 
 'use strict';
 
-import {registerCss} from '../src/css';
+import {registerCss} from './css';
 import './utilities';
 import './workspace';
 import './inputs/indented_input';
@@ -13,7 +13,6 @@ import './procedure_utils';
 import {Flydown} from './fields/flydown';
 import {FieldFlydown} from "./fields/field_flydown";
 import {FieldGlobalFlydown} from "./fields/field_global_flydown";
-import './fields/field_nocheck_dropdown';
 import {FieldLexicalVariable, LexicalVariable} from './fields/field_lexical_variable';
 import {FieldParameterFlydown} from './fields/field_parameter_flydown';
 import {FieldProcedureName} from './fields/field_procedurename';
