@@ -426,55 +426,11 @@ FieldLexicalVariable.prototype.getOptions = function(opt_useCache,
     if (!this.generatedOptions || !opt_useCache) {
       this.generatedOptions =
           this.menuGenerator_.call(this).concat(extraOption);
-      validateOptions(this.generatedOptions);
+      this.validateOptions(this.generatedOptions);
     }
     return this.generatedOptions.concat(extraOption);
   }
   return /** @type {!Array<!Array<string>>} */ (this.menuGenerator_);
-};
-
-// validateOptions copied from Blockly source since it's not exported from
-// field_dropdown.js
-/**
- * Validates the data structure to be processed as an options list.
- * @param {?} options The proposed dropdown options.
- * @throws {TypeError} If proposed options are incorrectly structured.
- */
-const validateOptions = function(options) {
-  if (!Array.isArray(options)) {
-    throw TypeError('FieldDropdown options must be an array.');
-  }
-  if (!options.length) {
-    throw TypeError('FieldDropdown options must not be an empty array.');
-  }
-  let foundError = false;
-  for (let i = 0; i < options.length; ++i) {
-    const tuple = options[i];
-    if (!Array.isArray(tuple)) {
-      foundError = true;
-      console.error(
-          'Invalid option[' + i + ']: Each FieldDropdown option must be an ' +
-          'array. Found: ',
-          tuple);
-    } else if (typeof tuple[1] != 'string') {
-      foundError = true;
-      console.error(
-          'Invalid option[' + i + ']: Each FieldDropdown option id must be ' +
-          'a string. Found ' + tuple[1] + ' in: ',
-          tuple);
-    } else if (
-      tuple[0] && (typeof tuple[0] != 'string') &&
-        (typeof tuple[0].src != 'string')) {
-      foundError = true;
-      console.error(
-          'Invalid option[' + i + ']: Each FieldDropdown option must have a ' +
-          'string label or image description. Found' + tuple[0] + ' in: ',
-          tuple);
-    }
-  }
-  if (foundError) {
-    throw TypeError('Found invalid FieldDropdown options.');
-  }
 };
 
 /**
