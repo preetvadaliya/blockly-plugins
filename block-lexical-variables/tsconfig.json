@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "dist",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "module": "es2015",
+    "moduleResolution": "bundler",
+    "target": "es6",
+    "strict": true,
+
+    // Explicit rather than inherited. At `target: es6` the implied lib is
+    // ES2015, which has no `Object.values`; `types: []` keeps the program
+    // browser-only, since the Node-flavoured code lives in test/*.js and is
+    // not part of it.
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "types": [],
+
+    "skipLibCheck": true,
+
+    // Already the default at `target: es6`, set explicitly because it is
+    // load-bearing here: FieldFlydown carries static class fields and
+    // FieldParameterFlydown assigns prototype properties after the class
+    // body, and a field definition emitted after `super()` would wipe state
+    // the base constructor had already caused to be built.
+    "useDefineForClassFields": false,
+
+    // Files are converted one at a time, so each has to stand alone as a
+    // module.
+    "isolatedModules": true,
+
+    // The sources are JavaScript until each is converted. allowJs stays off
+    // deliberately: relative imports are extensionless, so a .ts file
+    // resolves a .js sibling through webpack without tsc needing to read it,
+    // and turning it on would pull the whole untyped tree into the program.
+    "allowJs": false
+  },
+  // test/**/* is JavaScript on purpose — @blockly/dev-scripts finds test
+  // entries with a literal `.mocha.js` filter, so a .mocha.ts suite would be
+  // skipped silently and npm test would pass having run nothing.
+  "include": ["src"]
+}

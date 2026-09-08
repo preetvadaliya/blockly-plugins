@@ -35,6 +35,7 @@ import js from '@eslint/js';
 import jsdoc from 'eslint-plugin-jsdoc';
 import prettier from 'eslint-config-prettier';
 import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default [
   {
@@ -42,9 +43,11 @@ export default [
   },
 
   js.configs.recommended,
+  ...tseslint.configs.recommended,
   jsdoc.configs['flat/recommended'],
 
   {
+    files: ['**/*.js', '**/*.mjs', '**/*.ts'],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: 'module',
@@ -77,8 +80,12 @@ export default [
       'no-var': 'warn',
       //   prefer-const         10   mechanical
       'prefer-const': 'warn',
-      //   no-unused-vars       19   needs reading, not a bulk fix
-      'no-unused-vars': ['warn', {argsIgnorePattern: '^_'}],
+      //   no-unused-vars       19   needs reading, not a bulk fix. The base
+      //                             rule double-reports on type-only
+      //                             imports, so the TypeScript-aware
+      //                             version replaces it.
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': ['warn', {argsIgnorePattern: '^_'}],
       //   no-cond-assign       18   mostly deliberate `while ((x = next()))`
       'no-cond-assign': 'warn',
       //   no-useless-assignment 4
@@ -87,6 +94,12 @@ export default [
       //                             null and undefined, so it is reviewed
       //                             case by case rather than swept
       eqeqeq: ['warn', 'always', {null: 'ignore'}],
+      //   no-this-alias        17   `const thisBlock = this` inside the block
+      //                             definitions. These go away on their own
+      //                             as those files become TypeScript and the
+      //                             closures become arrow functions, so there
+      //                             is no separate commit to promote it
+      '@typescript-eslint/no-this-alias': 'warn',
 
       // Documentation. Warnings for now: the sources are documented, but in
       // Closure style with inline types. These tighten to errors as files
