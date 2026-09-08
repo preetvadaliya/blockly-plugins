@@ -320,13 +320,14 @@ TODO: I'm leaving the following in for now (but commented) because at one point
  * @protected
  */
 FieldLexicalVariable.prototype.doValueUpdate_ = function(newValue) {
-  // The original call for the following looked like:
+  // This deliberately skips FieldDropdown's own doValueUpdate_ and runs the
+  // one above it, as the original did when it could still write
   //   Blockly.FieldDropdown.superClass_.doValueUpdate_.call(this, newValue);
-  // but we can no longer use the Blockly.utils.object.inherits function, which sets the superclass_ property
-  // Note that if we just want the grandparent version of doValueUpdate_ we could use the following instead:
-  //   Object.getPrototypeOf(Object.getPrototypeOf(Object.getPrototypeOf(this))).doValueUpdate_(newValue);
-  // but since the original directly referenced the parent/superclass of Blockly.FieldDropdown, we do the same.
-  Object.getPrototypeOf(Blockly.FieldDropdown).prototype.doValueUpdate_.call(this, newValue);
+  // superClass_ went away with Blockly.utils.object.inherits, and the
+  // replacement was a reflective hop through
+  // Object.getPrototypeOf(Blockly.FieldDropdown). That resolves to
+  // Blockly.Field, so name it directly instead.
+  Blockly.Field.prototype.doValueUpdate_.call(this, newValue);
 
   function genLocalizedValue (value) {
     return value.startsWith('global ')
