@@ -24,7 +24,7 @@ import * as ProcedureUtils from './procedure_utils';
  *     ProcedureDatabase.
  * @constructor
  */
-export const ProcedureDatabase = function(workspace) {
+export const ProcedureDatabase = function (workspace) {
   /**
    * The source workspace for the ProcedureDatabase.
    * @type {!Blockly.WorkspaceSvg}
@@ -86,11 +86,12 @@ ProcedureDatabase.defaultValue = ['', 'none'];
  *     values (true) or without return values (false).
  * @return {!string[]}
  */
-ProcedureDatabase.prototype.getNames = function(returnValue) {
-  return ProcedureUtils.getProcedureNames(returnValue, this.workspace_)
-      .map(function(v) {
-        return v[0];
-      });
+ProcedureDatabase.prototype.getNames = function (returnValue) {
+  return ProcedureUtils.getProcedureNames(returnValue, this.workspace_).map(
+    function (v) {
+      return v[0];
+    },
+  );
 };
 
 /**
@@ -99,7 +100,7 @@ ProcedureDatabase.prototype.getNames = function(returnValue) {
  * @return {!Array.<Array.<string>>}
  * @param returnValue
  */
-ProcedureDatabase.prototype.getMenuItems = function(returnValue) {
+ProcedureDatabase.prototype.getMenuItems = function (returnValue) {
   return ProcedureUtils.getProcedureNames(returnValue, this.workspace_);
 };
 
@@ -110,25 +111,24 @@ ProcedureDatabase.prototype.getMenuItems = function(returnValue) {
  *     return values (true) or without return values (false).
  * @return {!Blockly.Block[]}
  */
-ProcedureDatabase.prototype.getDeclarationBlocks =
-    function(returnValue) {
-      return Object.values(
-          returnValue ? this.returnProcedures_ : this.voidProcedures_);
-    };
+ProcedureDatabase.prototype.getDeclarationBlocks = function (returnValue) {
+  return Object.values(
+    returnValue ? this.returnProcedures_ : this.voidProcedures_,
+  );
+};
 
-ProcedureDatabase.prototype.getDeclarationsBlocksExcept = function(block) {
+ProcedureDatabase.prototype.getDeclarationsBlocksExcept = function (block) {
   const blockArray = [];
-  Object.values(this.procedures_).forEach(function(b) {
+  Object.values(this.procedures_).forEach(function (b) {
     if (b !== block) blockArray.push(b);
   });
   return blockArray;
 };
 
-ProcedureDatabase.prototype.getAllDeclarationNames = function() {
-  return Object.values(this.procedures_)
-      .map(function(block) {
-        return block.getFieldValue('NAME');
-      });
+ProcedureDatabase.prototype.getAllDeclarationNames = function () {
+  return Object.values(this.procedures_).map(function (block) {
+    return block.getFieldValue('NAME');
+  });
 };
 
 /**
@@ -138,9 +138,11 @@ ProcedureDatabase.prototype.getAllDeclarationNames = function() {
  * @param {!Blockly.Block} block
  * @return {boolean} True if the definition was added, otherwise false.
  */
-ProcedureDatabase.prototype.addProcedure = function(name, block) {
-  if (block.type != 'procedures_defnoreturn' &&
-      block.type != 'procedures_defreturn') {
+ProcedureDatabase.prototype.addProcedure = function (name, block) {
+  if (
+    block.type != 'procedures_defnoreturn' &&
+    block.type != 'procedures_defreturn'
+  ) {
     // not a procedure block!
     console.warn('Attempt to addProcedure with block type ' + block.type);
     return false;
@@ -167,7 +169,7 @@ ProcedureDatabase.prototype.addProcedure = function(name, block) {
  * @param {!string} id
  * @return {boolean}
  */
-ProcedureDatabase.prototype.removeProcedure = function(id) {
+ProcedureDatabase.prototype.removeProcedure = function (id) {
   if (id in this.procedures_) {
     const block = this.procedures_[id];
     if (block.type == 'procedures_defnoreturn') {
@@ -192,9 +194,12 @@ ProcedureDatabase.prototype.removeProcedure = function(id) {
  * @returns {boolean} True if the procedure was renamed in the database,
  *     otherwise false.
  */
-ProcedureDatabase.prototype.renameProcedure =
-    function(procId, oldName, newName) {
-      /*
+ProcedureDatabase.prototype.renameProcedure = function (
+  procId,
+  oldName,
+  newName,
+) {
+  /*
       if (newName in this.procedures_) {
         return false;
       }
@@ -216,7 +221,7 @@ ProcedureDatabase.prototype.renameProcedure =
         return false;
       }
       */
-    };
+};
 
 /**
  * Get the procedure identified by {@link #id}. If the id does not identify a
@@ -226,12 +231,12 @@ ProcedureDatabase.prototype.renameProcedure =
  * @return {?Blockly.BlockSvg} The procedure block defining the procedure
  *     identified by {@link #id}.
  */
-ProcedureDatabase.prototype.getProcedure = function(id) {
+ProcedureDatabase.prototype.getProcedure = function (id) {
   const proc = this.procedures_[id];
   return proc ? proc : this.getProcedureByName(id);
 };
 
-ProcedureDatabase.prototype.getProcedureByName = function(name) {
+ProcedureDatabase.prototype.getProcedureByName = function (name) {
   for (const id in this.procedures_) {
     if (this.procedures_[id].getFieldValue('NAME') === name) {
       return this.procedures_[id];
@@ -240,7 +245,7 @@ ProcedureDatabase.prototype.getProcedureByName = function(name) {
   return undefined;
 };
 
-ProcedureDatabase.prototype.clear = function() {
+ProcedureDatabase.prototype.clear = function () {
   this.procedures_ = {};
   this.returnProcedures_ = {};
   this.voidProcedures_ = {};

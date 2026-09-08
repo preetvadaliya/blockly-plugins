@@ -25,7 +25,7 @@ export let isOn = false; // [lyn, 04/08/14] Turn off for production
  * Turn instrumentation on/off.
  * @param bool
  */
-export const setOn = function(bool) {
+export const setOn = function (bool) {
   isOn = bool;
 };
 
@@ -120,45 +120,49 @@ export const statNames = [
   'expandCollapsedTime',
 ];
 
-export const initializeStats = function(name) {
+export const initializeStats = function (name) {
   if (isOn) {
     console.log('Initializing stats for ' + name);
     const names = statNames;
     const stats = stats;
-    for (let i = 0, name; name = names[i]; i++) {
+    for (let i = 0, name; (name = names[i]); i++) {
       stats[name] = 0;
     }
   }
 };
 
-export const displayStats = function(name) {
+export const displayStats = function (name) {
   if (isOn) {
     const names = statNames;
     const stats = stats;
     console.log('Displaying stats for ' + name + ':');
-    console.log('  Instrument.useRenderDown=' +
-        useRenderDown);
-    console.log('  Instrument.useIsRenderingOn=' +
-        useIsRenderingOn);
-    console.log('  Instrument.avoidRenderWorkspaceInMouseUp=' +
-        avoidRenderWorkspaceInMouseUp);
-    console.log('  Instrument.avoidRenderDownOnCollapsedSubblocks=' +
-        avoidRenderDownOnCollapsedSubblocks);
-    console.log('  Instrument.useNeilGetHeightWidthFix=' +
-        useNeilGetHeightWidthFix);
-    console.log('  Instrument.useLynGetAllBlocksFix=' +
-        useLynGetAllBlocksFix);
-    console.log('  Instrument.useLynGetGlobalNamesFix=' +
-        useLynGetGlobalNamesFix);
-    console.log('  Instrument.useLynCacheGlobalNames=' +
-        useLynCacheGlobalNames);
-    for (let i = 0, name; name = names[i]; i++) {
+    console.log('  Instrument.useRenderDown=' + useRenderDown);
+    console.log('  Instrument.useIsRenderingOn=' + useIsRenderingOn);
+    console.log(
+      '  Instrument.avoidRenderWorkspaceInMouseUp=' +
+        avoidRenderWorkspaceInMouseUp,
+    );
+    console.log(
+      '  Instrument.avoidRenderDownOnCollapsedSubblocks=' +
+        avoidRenderDownOnCollapsedSubblocks,
+    );
+    console.log(
+      '  Instrument.useNeilGetHeightWidthFix=' + useNeilGetHeightWidthFix,
+    );
+    console.log('  Instrument.useLynGetAllBlocksFix=' + useLynGetAllBlocksFix);
+    console.log(
+      '  Instrument.useLynGetGlobalNamesFix=' + useLynGetGlobalNamesFix,
+    );
+    console.log(
+      '  Instrument.useLynCacheGlobalNames=' + useLynCacheGlobalNames,
+    );
+    for (let i = 0, name; (name = names[i]); i++) {
       console.log('  ' + name + '=' + stats[name]);
     }
   }
 };
 
-export const timer = function(thunk, callback) {
+export const timer = function (thunk, callback) {
   if (isOn) {
     const start = new Date().getTime();
     const result = thunk();

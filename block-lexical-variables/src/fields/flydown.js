@@ -25,7 +25,7 @@ export class Flydown extends Blockly.VerticalFlyout {
     super(workspaceOptions);
     this.dragAngleRange_ = 360;
   }
-};
+}
 
 /**
  * Previous CSS class for this flydown.
@@ -46,7 +46,7 @@ Flydown.prototype.VERTICAL_SEPARATION_FACTOR = 1;
  * @param {!String} cssClassName The name of the CSS class for this flydown.
  * @return {!Element} The flydown's SVG group.
  */
-Flydown.prototype.createDom = function(cssClassName) {
+Flydown.prototype.createDom = function (cssClassName) {
   /*
   <g>
     <path class={cssClassName}/>
@@ -54,10 +54,16 @@ Flydown.prototype.createDom = function(cssClassName) {
   </g>
   */
   this.previousCSSClassName_ = cssClassName; // Remember class name for later
-  this.svgGroup_ =
-      Blockly.utils.dom.createSvgElement('g', {'class': cssClassName}, null);
-  this.svgBackground_ =
-      Blockly.utils.dom.createSvgElement('path', {}, this.svgGroup_);
+  this.svgGroup_ = Blockly.utils.dom.createSvgElement(
+    'g',
+    {'class': cssClassName},
+    null,
+  );
+  this.svgBackground_ = Blockly.utils.dom.createSvgElement(
+    'path',
+    {},
+    this.svgGroup_,
+  );
   this.svgGroup_.appendChild(this.workspace_.createDom());
   return this.svgGroup_;
 };
@@ -68,7 +74,7 @@ Flydown.prototype.createDom = function(cssClassName) {
  * @param {!String} newCSSClassName The name of the new CSS class replacing the
  *     old one.
  */
-Flydown.prototype.setCSSClass = function(newCSSClassName) {
+Flydown.prototype.setCSSClass = function (newCSSClassName) {
   if (newCSSClassName !== this.previousCSSClassName_) {
     Blockly.utils.dom.removeClass(this.svgGroup_, this.previousCSSClassName_);
     Blockly.utils.dom.addClass(this.svgGroup_, newCSSClassName);
@@ -81,19 +87,20 @@ Flydown.prototype.setCSSClass = function(newCSSClassName) {
  * @param {!Blockly.Workspace} workspace The workspace in which to create new
  *     blocks.
  */
-Flydown.prototype.init = function(workspace) {
+Flydown.prototype.init = function (workspace) {
   // Flydowns have no scrollbar
   Blockly.Flyout.prototype.init.call(this, workspace, false);
   this.workspace_.setTheme(workspace.getTheme());
-  workspace.getComponentManager().addCapability(this.id,
-      Blockly.ComponentManager.Capability.AUTOHIDEABLE);
+  workspace
+    .getComponentManager()
+    .addCapability(this.id, Blockly.ComponentManager.Capability.AUTOHIDEABLE);
 };
 
 /**
  * Override the flyout position method to do nothing instead.
  * @private
  */
-Flydown.prototype.position = function() {
+Flydown.prototype.position = function () {
   return;
 };
 
@@ -103,7 +110,7 @@ Flydown.prototype.position = function() {
  * @param {!num} x X-position of upper-left corner of flydown.
  * @param {!num} y Y-position of upper-left corner of flydown.
  */
-Flydown.prototype.showAt = function(xmlList, x, y) {
+Flydown.prototype.showAt = function (xmlList, x, y) {
   Blockly.Events.disable();
   try {
     // invoke flyout method, which adds blocks to flydown
@@ -141,14 +148,14 @@ Flydown.prototype.showAt = function(xmlList, x, y) {
  * Overrides the reflow method of flyout
  * For RTL: Lay out the blocks right-aligned.
  */
-Flydown.prototype.reflow = function() {
+Flydown.prototype.reflow = function () {
   this.workspace_.scale = this.targetWorkspace.scale;
   const scale = this.workspace_.scale;
   let flydownWidth = 0;
   let flydownHeight = 0;
   const margin = this.CORNER_RADIUS * scale;
   const blocks = this.workspace_.getTopBlocks(false);
-  for (let i = 0, block; block = blocks[i]; i++) {
+  for (let i = 0, block; (block = blocks[i]); i++) {
     const blockHW = block.getHeightWidth();
     flydownWidth = Math.max(flydownWidth, blockHW.width * scale);
     flydownHeight += blockHW.height * scale;
@@ -156,13 +163,15 @@ Flydown.prototype.reflow = function() {
   flydownWidth += 2 * margin + this.tabWidth_ * scale; // tabWidth is width of
   // a plug
   const rendererConstants = this.workspace_.getRenderer().getConstants();
-  const startHatHeight = rendererConstants.ADD_START_HATS ?
-      rendererConstants.START_HAT_HEIGHT : 0;
-  flydownHeight += 3 * margin +
-      margin * this.VERTICAL_SEPARATION_FACTOR * (blocks.length) +
-      startHatHeight * scale / 2.0;
+  const startHatHeight = rendererConstants.ADD_START_HATS
+    ? rendererConstants.START_HAT_HEIGHT
+    : 0;
+  flydownHeight +=
+    3 * margin +
+    margin * this.VERTICAL_SEPARATION_FACTOR * blocks.length +
+    (startHatHeight * scale) / 2.0;
   if (this.width_ != flydownWidth) {
-    for (let j = 0, block; block = blocks[j]; j++) {
+    for (let j = 0, block; (block = blocks[j]); j++) {
       const blockHW = block.getHeightWidth();
       const blockXY = block.getRelativeToSurfaceXY();
       if (this.RTL) {
@@ -174,8 +183,10 @@ Flydown.prototype.reflow = function() {
       if (block.flyoutRect_) {
         block.flyoutRect_.setAttribute('width', blockHW.width);
         block.flyoutRect_.setAttribute('height', blockHW.height);
-        block.flyoutRect_.setAttribute('x',
-            this.RTL ? blockXY.x - blockHW.width : blockXY.x);
+        block.flyoutRect_.setAttribute(
+          'x',
+          this.RTL ? blockXY.x - blockHW.width : blockXY.x,
+        );
         block.flyoutRect_.setAttribute('y', blockXY.y);
       }
     }
@@ -185,7 +196,7 @@ Flydown.prototype.reflow = function() {
   }
 };
 
-Flydown.prototype.onMouseMove_ = function(e) {
+Flydown.prototype.onMouseMove_ = function (e) {
   // override Blockly's flyout behavior for moving the flyout.
   return;
 };
@@ -196,7 +207,7 @@ Flydown.prototype.onMouseMove_ = function(e) {
  * @return {!Blockly.Block} The new block in the main workspace.
  * @private
  */
-Flydown.prototype.placeNewBlock_ = function(originBlock) {
+Flydown.prototype.placeNewBlock_ = function (originBlock) {
   const targetWorkspace = this.targetWorkspace;
   const svgRootOld = originBlock.getSvgRoot();
   if (!svgRootOld) {
@@ -229,9 +240,9 @@ Flydown.prototype.placeNewBlock_ = function(originBlock) {
   const xyNew = targetWorkspace.getSvgXY(svgRootNew);
   // Scale the scroll (getSvgXY did not do this).
   xyNew.x +=
-      targetWorkspace.scrollX / targetWorkspace.scale - targetWorkspace.scrollX;
+    targetWorkspace.scrollX / targetWorkspace.scale - targetWorkspace.scrollX;
   xyNew.y +=
-      targetWorkspace.scrollY / targetWorkspace.scale - targetWorkspace.scrollY;
+    targetWorkspace.scrollY / targetWorkspace.scale - targetWorkspace.scrollY;
   // If the flyout is collapsible and the workspace can't be scrolled.
   if (targetWorkspace.getToolbox() && !targetWorkspace.scrollbar) {
     xyNew.x += targetWorkspace.getToolbox().getWidth() / targetWorkspace.scale;
@@ -245,7 +256,7 @@ Flydown.prototype.placeNewBlock_ = function(originBlock) {
 
 Flydown.prototype.shouldHide = true;
 
-Flydown.prototype.hide = function() {
+Flydown.prototype.hide = function () {
   if (this.shouldHide) {
     Blockly.Flyout.prototype.hide.call(this);
     FieldFlydown.openFieldFlydown_ = null;
@@ -253,7 +264,7 @@ Flydown.prototype.hide = function() {
   this.shouldHide = true;
 };
 
-Flydown.prototype.autoHide = function() {
+Flydown.prototype.autoHide = function () {
   this.hide();
 };
 

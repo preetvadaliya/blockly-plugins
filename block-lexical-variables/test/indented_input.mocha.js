@@ -32,9 +32,7 @@ suite('IndentedInput', function () {
     };
     this.workspace = new Blockly.Workspace();
     this.block = this.workspace.newBlock('indented_input_host');
-    this.input = this.block.appendInput(
-      new IndentedInput('IN', this.block),
-    );
+    this.input = this.block.appendInput(new IndentedInput('IN', this.block));
   });
 
   teardown(function () {

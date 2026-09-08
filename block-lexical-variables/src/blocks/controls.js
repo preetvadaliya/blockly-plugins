@@ -47,7 +47,7 @@ Blockly.Blocks['controls_forRange'] = {
   // For range.
   category: 'Control',
   helpUrl: Blockly.Msg.LANG_CONTROLS_FORRANGE_HELPURL,
-  init: function() {
+  init: function () {
     // Let the theme determine the color.
     // this.setColour(Blockly.CONTROL_CATEGORY_HUE);
     this.setStyle('loop_blocks');
@@ -56,27 +56,29 @@ Blockly.Blocks['controls_forRange'] = {
     // [lyn, 11/30/12] Changed variable to be text input box that does renaming
     // right (i.e., avoids variable capture)
     this.appendValueInput('FROM')
-        .setCheck(Utilities.yailTypeToBlocklyType('number',
-            Utilities.INPUT))
-        .appendField(Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_ITEM)
-        .appendField(new FieldParameterFlydown(
-            Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_VAR, true,
-            FieldFlydown.DISPLAY_BELOW), 'VAR')
-        .appendField(Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_START)
-        .setAlign(Blockly.inputs.Align.RIGHT);
+      .setCheck(Utilities.yailTypeToBlocklyType('number', Utilities.INPUT))
+      .appendField(Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_ITEM)
+      .appendField(
+        new FieldParameterFlydown(
+          Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_VAR,
+          true,
+          FieldFlydown.DISPLAY_BELOW,
+        ),
+        'VAR',
+      )
+      .appendField(Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_START)
+      .setAlign(Blockly.inputs.Align.RIGHT);
     this.appendValueInput('TO')
-        .setCheck(Utilities.yailTypeToBlocklyType('number',
-            Utilities.INPUT))
-        .appendField(Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_END)
-        .setAlign(Blockly.inputs.Align.RIGHT);
+      .setCheck(Utilities.yailTypeToBlocklyType('number', Utilities.INPUT))
+      .appendField(Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_END)
+      .setAlign(Blockly.inputs.Align.RIGHT);
     this.appendValueInput('BY')
-        .setCheck(Utilities.yailTypeToBlocklyType('number',
-            Utilities.INPUT))
-        .appendField(Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_STEP)
-        .setAlign(Blockly.inputs.Align.RIGHT);
+      .setCheck(Utilities.yailTypeToBlocklyType('number', Utilities.INPUT))
+      .appendField(Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_STEP)
+      .setAlign(Blockly.inputs.Align.RIGHT);
     this.appendStatementInput('DO')
-        .appendField(Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_DO)
-        .setAlign(Blockly.inputs.Align.RIGHT);
+      .appendField(Blockly.Msg.LANG_CONTROLS_FORRANGE_INPUT_DO)
+      .setAlign(Blockly.inputs.Align.RIGHT);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip(Blockly.Msg.LANG_CONTROLS_FORRANGE_TOOLTIP);
@@ -100,7 +102,7 @@ Blockly.Blocks['controls_forEach'] = {
   // For each loop.
   category: 'Control',
   helpUrl: Blockly.Msg.LANG_CONTROLS_FOREACH_HELPURL,
-  init: function() {
+  init: function () {
     // Let the theme determine the color.
     // this.setColour(Blockly.CONTROL_CATEGORY_HUE);
     this.setStyle('loop_blocks');
@@ -109,16 +111,21 @@ Blockly.Blocks['controls_forEach'] = {
     // [lyn, 11/29/12] Changed variable to be text input box that does renaming
     // right (i.e., avoids variable capture)
     this.appendValueInput('LIST')
-        .setCheck(Utilities.yailTypeToBlocklyType('list',
-            Utilities.INPUT))
-        .appendField(Blockly.Msg.LANG_CONTROLS_FOREACH_INPUT_ITEM)
-        .appendField(new FieldParameterFlydown(
-            Blockly.Msg.LANG_CONTROLS_FOREACH_INPUT_VAR,
-            true, FieldFlydown.DISPLAY_BELOW), 'VAR')
-        .appendField(Blockly.Msg.LANG_CONTROLS_FOREACH_INPUT_INLIST)
-        .setAlign(Blockly.inputs.Align.RIGHT);
-    this.appendStatementInput('DO')
-        .appendField(Blockly.Msg.LANG_CONTROLS_FOREACH_INPUT_DO);
+      .setCheck(Utilities.yailTypeToBlocklyType('list', Utilities.INPUT))
+      .appendField(Blockly.Msg.LANG_CONTROLS_FOREACH_INPUT_ITEM)
+      .appendField(
+        new FieldParameterFlydown(
+          Blockly.Msg.LANG_CONTROLS_FOREACH_INPUT_VAR,
+          true,
+          FieldFlydown.DISPLAY_BELOW,
+        ),
+        'VAR',
+      )
+      .appendField(Blockly.Msg.LANG_CONTROLS_FOREACH_INPUT_INLIST)
+      .setAlign(Blockly.inputs.Align.RIGHT);
+    this.appendStatementInput('DO').appendField(
+      Blockly.Msg.LANG_CONTROLS_FOREACH_INPUT_DO,
+    );
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip(Blockly.Msg.LANG_CONTROLS_FOREACH_TOOLTIP);
@@ -136,16 +143,16 @@ Blockly.Blocks['controls_do_then_return'] = {
   // String length.
   category: 'Control',
   helpUrl: Blockly.Msg.LANG_CONTROLS_DO_THEN_RETURN_HELPURL,
-  init: function() {
+  init: function () {
     // this.setColour(Blockly.CONTROL_CATEGORY_HUE);
     this.setStyle('loop_blocks');
-    this.appendStatementInput('STM')
-        .appendField(Blockly.Msg.LANG_CONTROLS_DO_THEN_RETURN_INPUT_DO);
+    this.appendStatementInput('STM').appendField(
+      Blockly.Msg.LANG_CONTROLS_DO_THEN_RETURN_INPUT_DO,
+    );
     this.appendValueInput('VALUE')
-        .appendField(Blockly.Msg.LANG_CONTROLS_DO_THEN_RETURN_INPUT_RETURN)
-        .setAlign(Blockly.inputs.Align.RIGHT);
+      .appendField(Blockly.Msg.LANG_CONTROLS_DO_THEN_RETURN_INPUT_RETURN)
+      .setAlign(Blockly.inputs.Align.RIGHT);
     this.setOutput(true, null);
     this.setTooltip(Blockly.Msg.LANG_CONTROLS_DO_THEN_RETURN_TOOLTIP);
   },
 };
-

@@ -61,27 +61,28 @@ export const prefixSeparator = '_';
 
 // Curried for convenient use in field_lexical_variable.js
 // e.g., "param x" vs "x"
-export const possiblyPrefixMenuNameWith = function(prefix) {
-  return function(name) {
-    return (showPrefixToUser ? (prefix + menuSeparator) : '') +
-      name;
+export const possiblyPrefixMenuNameWith = function (prefix) {
+  return function (name) {
+    return (showPrefixToUser ? prefix + menuSeparator : '') + name;
   };
 };
 
-export const prefixGlobalMenuName = function(name) {
-  return Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX +
-    menuSeparator + name;
+export const prefixGlobalMenuName = function (name) {
+  return Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX + menuSeparator + name;
 };
 
 // Return a list of (1) prefix (if it exists, "" if not) and (2) unprefixed name
-export const unprefixName = function(name) {
-  if (name.indexOf(
-      Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX + menuSeparator) === 0) {
+export const unprefixName = function (name) {
+  if (
+    name.indexOf(Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX + menuSeparator) === 0
+  ) {
     // Globals always have prefix, regardless of flags. Handle these specially
     return [
       Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX,
-      name.substring(Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX.length +
-        menuSeparator.length)];
+      name.substring(
+        Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX.length + menuSeparator.length,
+      ),
+    ];
   } else if (name.indexOf(GLOBAL_KEYWORD + menuSeparator) === 0) {
     return [GLOBAL_KEYWORD, name.substring(6 + menuSeparator.length)];
   } else if (!showPrefixToUser) {
@@ -94,7 +95,7 @@ export const unprefixName = function(name) {
       loopParameterPrefix,
       loopRangeParameterPrefix,
     ];
-    for (let i=0; i < prefixes.length; i++) {
+    for (let i = 0; i < prefixes.length; i++) {
       if (name.indexOf(prefixes[i]) === 0) {
         // name begins with prefix
         return [
@@ -109,10 +110,9 @@ export const unprefixName = function(name) {
 };
 
 // Curried for convenient use in generators/lexical-variables.js
-export const possiblyPrefixGeneratedVarName = function(prefix) {
-  return function(name) {
+export const possiblyPrefixGeneratedVarName = function (prefix) {
+  return function (name) {
     // e.g., "param_x" vs "x"
-    return (usePrefixInCode ? (prefix + prefixSeparator) : '') + name;
+    return (usePrefixInCode ? prefix + prefixSeparator : '') + name;
   };
 };
-

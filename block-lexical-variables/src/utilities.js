@@ -21,17 +21,23 @@ import './msg';
  *
  * @return {boolean}
  */
-export const InstantInTime = function(myConn, otherConn) {
-  if (!myConn.getSourceBlock().rendered ||
-      !otherConn.getSourceBlock().rendered) {
-    if (otherConn.getCheck() && !otherConn.getCheck().includes('InstantInTime')) {
+export const InstantInTime = function (myConn, otherConn) {
+  if (
+    !myConn.getSourceBlock().rendered ||
+    !otherConn.getSourceBlock().rendered
+  ) {
+    if (
+      otherConn.getCheck() &&
+      !otherConn.getCheck().includes('InstantInTime')
+    ) {
       otherConn.getSourceBlock().badBlock();
     }
     return true;
   }
-  return !otherConn.getCheck() || otherConn.getCheck().includes('InstantInTime');
+  return (
+    !otherConn.getCheck() || otherConn.getCheck().includes('InstantInTime')
+  );
 };
-
 
 // Convert Yail types to Blockly types
 // Yail types are represented by strings: number, text, list, any, ...
@@ -93,7 +99,7 @@ export const INPUT = 'input';
  *
  * @return {string}
  */
-export const yailTypeToBlocklyType = function(yail, inputOrOutput) {
+export const yailTypeToBlocklyType = function (yail, inputOrOutput) {
   const type = YailTypeToBlocklyTypeMap[yail][inputOrOutput];
   if (type === undefined) {
     throw new Error('Unknown Yail type: ' + yail + ' -- YailTypeToBlocklyType');
@@ -101,27 +107,28 @@ export const yailTypeToBlocklyType = function(yail, inputOrOutput) {
   return type;
 };
 
-
 // Blockly doesn't wrap tooltips, so these can get too wide.  We'll create our
 // own tooltip setter that wraps to length 60.
 
-export const setTooltip = function(block, tooltip) {
+export const setTooltip = function (block, tooltip) {
   block.setTooltip(wrapSentence(tooltip, 60));
 };
 
 // Wrap a string by splitting at spaces. Permit long chunks if there
 // are no spaces.
 
-export const wrapSentence = function(str, len) {
+export const wrapSentence = function (str, len) {
   str = str.trim();
   if (str.length < len) return str;
-  const place = (str.lastIndexOf(' ', len));
+  const place = str.lastIndexOf(' ', len);
   if (place == -1) {
-    return str.substring(0, len).trim() +
-        wrapSentence(str.substring(len), len);
+    return str.substring(0, len).trim() + wrapSentence(str.substring(len), len);
   } else {
-    return str.substring(0, place).trim() + '\n' +
-        wrapSentence(str.substring(place), len);
+    return (
+      str.substring(0, place).trim() +
+      '\n' +
+      wrapSentence(str.substring(place), len)
+    );
   }
 };
 
@@ -131,7 +138,7 @@ export const wrapSentence = function(str, len) {
  * @return {!(Array<!Element>|NodeList<!Element>)} An array or array-like list
  *     of just the element children of the given element.
  */
-export const getChildren = function(element) {
+export const getChildren = function (element) {
   'use strict';
   // We check if the children attribute is supported for child elements
   // since IE8 misuses the attribute by also including comments.
@@ -139,8 +146,7 @@ export const getChildren = function(element) {
     return element.children;
   }
   // Fall back to manually filtering the element's child nodes.
-  return Array.prototype.filter.call(element.childNodes, function(node) {
+  return Array.prototype.filter.call(element.childNodes, function (node) {
     return node.nodeType == Blockly.utils.dom.NodeType.ELEMENT_NODE;
   });
 };
-

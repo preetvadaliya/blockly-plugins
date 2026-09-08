@@ -20,76 +20,78 @@
  *   construct a substitution from that.
  * If all other cases (e.g., no argument is provided)/ construct the empty substitution.
  */
-export const Substitution = function(arg1, arg2) {
-    this.bindings = {}; // empty substitution is default.
-    // Test that arg1 and arg2 are equal length arrays of strings
-    if (Substitution.isAllStringsArray(arg2)
-        && Substitution.isAllStringsArray(arg1)
-        && arg1.length === arg2.length) {
-        for (var i = 0; i < arg1.length; i++) {
-            this.bindings[arg1[i]] = arg2[i];
-        }
-    } else if (!arg2 && Substitution.isBindingsObject(arg1)) {
-        // Make a copy of the bindings so not sharing binding structure with argument.
-        this.bindings = {};
-        for (var oldName in arg1) {
-            this.bindings[oldName] = arg1[oldName];
-        }
+export const Substitution = function (arg1, arg2) {
+  this.bindings = {}; // empty substitution is default.
+  // Test that arg1 and arg2 are equal length arrays of strings
+  if (
+    Substitution.isAllStringsArray(arg2) &&
+    Substitution.isAllStringsArray(arg1) &&
+    arg1.length === arg2.length
+  ) {
+    for (var i = 0; i < arg1.length; i++) {
+      this.bindings[arg1[i]] = arg2[i];
     }
-}
+  } else if (!arg2 && Substitution.isBindingsObject(arg1)) {
+    // Make a copy of the bindings so not sharing binding structure with argument.
+    this.bindings = {};
+    for (var oldName in arg1) {
+      this.bindings[oldName] = arg1[oldName];
+    }
+  }
+};
 
 /**
  * @param things
  * @returns true iff things is an array containing only strings. Otherwise returns false.
  */
-Substitution.isAllStringsArray = function(things) {
-    // [lyn, 11/17/13] This fails for things that are obviously arrays. Dunno why
-    // if (!(things instanceof Array)) {
-    //  return false;
-    //}
-    if (typeof(things) !== "object" || !things.length) { // Say it's not an array if it's not an object with a length field.
-        return false;
+Substitution.isAllStringsArray = function (things) {
+  // [lyn, 11/17/13] This fails for things that are obviously arrays. Dunno why
+  // if (!(things instanceof Array)) {
+  //  return false;
+  //}
+  if (typeof things !== 'object' || !things.length) {
+    // Say it's not an array if it's not an object with a length field.
+    return false;
+  }
+  for (var i = 0; i < things.length; i++) {
+    if (typeof things[i] !== 'string') {
+      return false;
     }
-    for (var i = 0; i < things.length; i++) {
-        if (typeof(things[i]) !== "string") {
-            return false;
-        }
-    }
-    return true;
-}
+  }
+  return true;
+};
 
 /**
  * @param obj An object
  * @returns true iff obj is an Object containting only string properties with string values.
  *   Otherwise returns false.
  */
-Substitution.isBindingsObject = function(thing) {
-    // [lyn, 11/17/13] This fails for things that are obviously Objects. Dunno why
-    // if (!(obj instanceof Object)) {
-    //  return false;
-    if (typeof(thing) != "object") {
+Substitution.isBindingsObject = function (thing) {
+  // [lyn, 11/17/13] This fails for things that are obviously Objects. Dunno why
+  // if (!(obj instanceof Object)) {
+  //  return false;
+  if (typeof thing != 'object') {
+    return false;
+  } else {
+    for (var prop in thing) {
+      if (!(typeof prop === 'string') || !typeof (thing[prop] === 'string')) {
         return false;
-    } else {
-        for (var prop in thing) {
-            if (! (typeof(prop) === "string")
-                || !(typeof(thing[prop] === "string"))) {
-                return false
-            }
-        }
+      }
     }
-    return true;
-}
+  }
+  return true;
+};
 
 /**
  * @param oldName
  * @param newName
  * @returns {Substitution} A substitution with one pair from oldName to newName
  */
-Substitution.simpleSubstitution = function(oldName, newName) {
-    var bindings = {};
-    bindings[oldName] = newName;
-    return new Substitution(bindings);
-}
+Substitution.simpleSubstitution = function (oldName, newName) {
+  var bindings = {};
+  bindings[oldName] = newName;
+  return new Substitution(bindings);
+};
 
 /**
  * Apply a substitution to a name.
@@ -98,75 +100,77 @@ Substitution.simpleSubstitution = function(oldName, newName) {
  *   element in the range; otherwise, returns name unchanged.
  */
 Substitution.prototype.apply = function (name) {
-    var output = this.bindings[name];
-    if (output) {
-        return output;
-    } else {
-        return name;
-    }
-}
+  var output = this.bindings[name];
+  if (output) {
+    return output;
+  } else {
+    return name;
+  }
+};
 
 /**
  * @param names: A list of strings
  * @returns {Array of strings} the result of applying this substitution to each element of names
  */
-Substitution.prototype.map = function(names) {
-    const thisSubst = this; // Need to name "this" for use in function closure passed to map.
-    return names.map( function(name) { return thisSubst.apply(name); } );
-}
+Substitution.prototype.map = function (names) {
+  const thisSubst = this; // Need to name "this" for use in function closure passed to map.
+  return names.map(function (name) {
+    return thisSubst.apply(name);
+  });
+};
 
 /**
  * @returns {string} A string representation of this substitution
  */
-Substitution.prototype.toString = function() {
-    var bindingStrings = [];
-    for (var oldName in this.bindings) {
-        bindingStrings.push(oldName + ":" + this.bindings[oldName]);
-    }
-    return "Substitution{" + bindingStrings.sort().join(",") + "}";
-}
+Substitution.prototype.toString = function () {
+  var bindingStrings = [];
+  for (var oldName in this.bindings) {
+    bindingStrings.push(oldName + ':' + this.bindings[oldName]);
+  }
+  return 'Substitution{' + bindingStrings.sort().join(',') + '}';
+};
 
 /**
  * @returns {Substitution} a new copy of this substitution
  */
-Substitution.prototype.copy = function() {
-    var newSubst = new Substitution();
-    for (var oldName in this.bindings) {
-        newSubst.bindings[oldName] = this.bindings[oldName];
-    }
-    return newSubst;
-}
+Substitution.prototype.copy = function () {
+  var newSubst = new Substitution();
+  for (var oldName in this.bindings) {
+    newSubst.bindings[oldName] = this.bindings[oldName];
+  }
+  return newSubst;
+};
 
 /**
  * @param names: A list of strings
  * @returns {Substitution} a new substitution whose domain is the intersection of
  *   names and the domain of this substitution.
  */
-Substitution.prototype.restrictDomain = function(names) {
-    var newSubst = new Substitution();
-    for (var i = 0; i < names.length; i++) {
-        var result = this.bindings[names[i]];
-        if (result) {
-            newSubst.bindings[names[i]] = result;
-        }
+Substitution.prototype.restrictDomain = function (names) {
+  var newSubst = new Substitution();
+  for (var i = 0; i < names.length; i++) {
+    var result = this.bindings[names[i]];
+    if (result) {
+      newSubst.bindings[names[i]] = result;
     }
-    return newSubst;
-}
+  }
+  return newSubst;
+};
 
 /**
  * @param names: A list of strings
  * @returns {Substitution} a new substitution whose domain is the difference of
  *   the domain of this substitution and names
  */
-Substitution.prototype.remove = function(names) {
-    var newSubst = new Substitution();
-    for (var oldName in this.bindings) {
-        if (names.indexOf(oldName) == -1) {
-            newSubst.bindings[oldName] = this.bindings[oldName];
-        }
+Substitution.prototype.remove = function (names) {
+  var newSubst = new Substitution();
+  for (var oldName in this.bindings) {
+    if (names.indexOf(oldName) == -1) {
+      newSubst.bindings[oldName] = this.bindings[oldName];
     }
-    return newSubst;
-}
+  }
+  return newSubst;
+};
 
 /**
  * @param otherSubst: A substitution
@@ -174,36 +178,32 @@ Substitution.prototype.remove = function(names) {
  *   this substitution and otherSubst. Any input/output mapping in otherSubst whose
  *   input is in this substitution overrides the input in this substitution.
  */
-Substitution.prototype.extend = function(otherSubst) {
-    var newSubst = this.copy();
-    for (var oldName in otherSubst.bindings) {
-        newSubst.bindings[oldName] = otherSubst.bindings[oldName];
-    }
-    return newSubst;
-}
+Substitution.prototype.extend = function (otherSubst) {
+  var newSubst = this.copy();
+  for (var oldName in otherSubst.bindings) {
+    newSubst.bindings[oldName] = otherSubst.bindings[oldName];
+  }
+  return newSubst;
+};
 
 /**
  * @returns {Array of String} a list of all the old names in the domain of this substitution.
  */
-Substitution.prototype.domain = function() {
-    var oldNames = [];
-    for (var oldName in this.bindings) {
-        oldNames.push(oldName);
-    }
-    return oldNames.sort();
-}
+Substitution.prototype.domain = function () {
+  var oldNames = [];
+  for (var oldName in this.bindings) {
+    oldNames.push(oldName);
+  }
+  return oldNames.sort();
+};
 
 /**
  * @returns {Array of String} a copy of the input/output bindings in this substitution.
  */
-Substitution.prototype.getBindings = function() {
-    var bindings = {};
-    for (var oldName in this.bindings) {
-        bindings[oldName] = this.bindings[oldName];
-    }
-    return bindings;
-}
-
-
-
-
+Substitution.prototype.getBindings = function () {
+  var bindings = {};
+  for (var oldName in this.bindings) {
+    bindings[oldName] = this.bindings[oldName];
+  }
+  return bindings;
+};

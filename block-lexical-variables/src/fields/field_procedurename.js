@@ -23,7 +23,7 @@ import * as ProcedureUtils from '../procedure_utils';
 export class FieldProcedureName extends Blockly.FieldTextInput {
   constructor(text) {
     super(text, ProcedureUtils.renameProcedure);
-  };
+  }
   /**
    * Set the value of the field.
    *
@@ -52,8 +52,7 @@ export class FieldProcedureName extends Blockly.FieldTextInput {
       }
     }
     this.oldName_ = undefined;
-  };
-
+  }
 }
 
 /*
@@ -74,11 +73,9 @@ FieldProcedureName.prototype.onHtmlInputChange = function(e) {
  * @package
  * @nocollapse
  */
-FieldProcedureName.fromJson = function(options) {
+FieldProcedureName.fromJson = function (options) {
   const name = Blockly.utils.replaceMessageReferences(options['name']);
   return new FieldProcedureName(name);
 };
 
-Blockly.fieldRegistry.register('field_procedurename',
-    FieldProcedureName);
-
+Blockly.fieldRegistry.register('field_procedurename', FieldProcedureName);

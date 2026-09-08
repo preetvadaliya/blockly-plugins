@@ -9,8 +9,9 @@ import {IndentedInput} from '../inputs/indented_input';
  * The IndentedInputMeasurable provides the dimensions of the
  * indented input in the rendering pipeline.
  */
-class IndentedInputMeasurable extends
-  Blockly.blockRendering.ExternalValueInput {
+class IndentedInputMeasurable
+  extends Blockly.blockRendering.ExternalValueInput
+{
   /**
    * Creates a new IndentedInputMeasurable for the given input assuming the
    * given renderer constants.
@@ -47,23 +48,28 @@ export class GerasHighlighter extends Blockly.geras.Highlighter {
   drawIndentedInput(row) {
     const input = row.getLastInput();
     if (this.RTL_) {
-      const belowTabHeight = row.height - input.connectionHeight -
-        input.connectionOffsetY;
+      const belowTabHeight =
+        row.height - input.connectionHeight - input.connectionOffsetY;
 
       this.steps_ +=
         Blockly.utils.svgPaths.moveTo(
-            input.xPos + this.highlightOffset + input.connectionWidth - 1,
-            row.yPos) +
+          input.xPos + this.highlightOffset + input.connectionWidth - 1,
+          row.yPos,
+        ) +
         Blockly.utils.svgPaths.lineOnAxis('v', input.connectionOffsetY) +
         this.puzzleTabPaths_.pathDown(this.RTL_) +
         Blockly.utils.svgPaths.lineOnAxis('v', belowTabHeight);
     } else {
       this.steps_ +=
-        Blockly.utils.svgPaths.moveTo(input.xPos + input.connectionWidth,
-            row.yPos + input.connectionOffsetY) +
+        Blockly.utils.svgPaths.moveTo(
+          input.xPos + input.connectionWidth,
+          row.yPos + input.connectionOffsetY,
+        ) +
         this.puzzleTabPaths_.pathDown(this.RTL_) +
-        Blockly.utils.svgPaths.moveTo(input.xPos + input.connectionWidth + 1,
-            row.yPos + input.height);
+        Blockly.utils.svgPaths.moveTo(
+          input.xPos + input.connectionWidth + 1,
+          row.yPos + input.height,
+        );
     }
   }
 }
@@ -115,31 +121,39 @@ export class GerasDrawer extends Blockly.geras.Drawer {
   drawIndentedInput_(row) {
     const input = row.getLastInput();
     this.positionIndentedValueConnection_(row);
-    (/** @type {GerasHighlighter} */ this.highlighter_).drawIndentedInput(row);
+    this /** @type {GerasHighlighter} */.highlighter_
+      .drawIndentedInput(row);
 
-    const pathDown = (typeof input.shape.pathDown == 'function') ?
-      input.shape.pathDown(input.height) :
-      input.shape.pathDown;
+    const pathDown =
+      typeof input.shape.pathDown == 'function'
+        ? input.shape.pathDown(input.height)
+        : input.shape.pathDown;
 
     this.outlinePath_ +=
-      Blockly.utils.svgPaths.lineOnAxis('H',
-          input.xPos + input.connectionWidth) +
+      Blockly.utils.svgPaths.lineOnAxis(
+        'H',
+        input.xPos + input.connectionWidth,
+      ) +
       Blockly.utils.svgPaths.lineOnAxis('v', input.connectionOffsetY) +
       pathDown +
-      Blockly.utils.svgPaths.lineOnAxis('v',
-          row.height - input.connectionHeight - input.connectionOffsetY) +
+      Blockly.utils.svgPaths.lineOnAxis(
+        'v',
+        row.height - input.connectionHeight - input.connectionOffsetY,
+      ) +
       Blockly.utils.svgPaths.lineOnAxis('H', input.xPos + input.width);
   }
 
-  positionIndentedValueConnection_ = function(row) {
+  positionIndentedValueConnection_ = function (row) {
     const input = row.getLastInput();
     if (input.connectionModel) {
       let connX = row.xPos + row.statementEdge + row.constants_.TAB_WIDTH;
       if (this.info_.RTL) {
         connX *= -1;
       }
-      input.connectionModel.setOffsetInBlock(connX,
-          row.yPos + input.connectionOffsetY);
+      input.connectionModel.setOffsetInBlock(
+        connX,
+        row.yPos + input.connectionOffsetY,
+      );
     }
   };
 }
@@ -157,7 +171,7 @@ export class GerasRenderInfo extends Blockly.geras.RenderInfo {
   addInput_(input, activeRow) {
     if (input instanceof IndentedInput) {
       activeRow.elements.push(
-          new IndentedInputMeasurable(this.constants_, input)
+        new IndentedInputMeasurable(this.constants_, input),
       );
       activeRow.hasStatement = true;
     } else {

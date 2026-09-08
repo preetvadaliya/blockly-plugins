@@ -70,7 +70,9 @@ suite('ProcedureFreeVariables', function () {
 
     const getter = this.workspace.newBlock('lexical_variable_get');
     getter.setFieldValue('x', 'VAR');
-    proc.getInput(proc.bodyInputName).connection.connect(getter.outputConnection);
+    proc
+      .getInput(proc.bodyInputName)
+      .connection.connect(getter.outputConnection);
 
     // Guard against the vacuous version of this test.
     chai.assert.equal(

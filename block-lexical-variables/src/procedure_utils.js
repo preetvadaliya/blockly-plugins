@@ -20,13 +20,15 @@ import {
 
 const procDefaultValue = ['', ''];
 
-export const onChange = function(procedureId) {
+export const onChange = function (procedureId) {
   let workspace = this.block.workspace.getTopWorkspace();
   if (!this.block.isEditable()) {
     return;
   }
 
-  const procDefBlock = workspace.getProcedureDatabase().getProcedure(procedureId);
+  const procDefBlock = workspace
+    .getProcedureDatabase()
+    .getProcedure(procedureId);
   // loading but the definition block hasn't been processed yet.
   if (!procDefBlock) return;
   const text = procDefBlock.getFieldValue('NAME');
@@ -34,7 +36,7 @@ export const onChange = function(procedureId) {
   // remove the old arguments.
   if (!this.block.isRenaming) {
     if (text == '' || text != this.getValue()) {
-      for (let i=0; this.block.getInput('ARG' + i) != null; i++) {
+      for (let i = 0; this.block.getInput('ARG' + i) != null; i++) {
         this.block.removeInput('ARG' + i);
       }
       // return;
@@ -51,17 +53,21 @@ export const onChange = function(procedureId) {
     //  def.mutator.shouldHide = true;
     // }
     // It's OK if def.paramIds is null
-    this.block.setProcedureParameters(procDefBlock.arguments_, procDefBlock.paramIds_, true);
+    this.block.setProcedureParameters(
+      procDefBlock.arguments_,
+      procDefBlock.paramIds_,
+      true,
+    );
   } else {
     this.block.render();
   }
 };
 
-export const getProcedureNames = function(returnValue, opt_workspace) {
+export const getProcedureNames = function (returnValue, opt_workspace) {
   const workspace = opt_workspace || Blockly.common.getMainWorkspace();
   const topBlocks = workspace.getTopBlocks();
   const procNameArray = [procDefaultValue];
-  for (let i=0; i<topBlocks.length; i++) {
+  for (let i = 0; i < topBlocks.length; i++) {
     const procName = topBlocks[i].getFieldValue('NAME');
     if (topBlocks[i].type == 'procedures_defnoreturn' && !returnValue) {
       procNameArray.push([procName, procName]);
@@ -69,7 +75,7 @@ export const getProcedureNames = function(returnValue, opt_workspace) {
       procNameArray.push([procName, procName]);
     }
   }
-  if (procNameArray.length > 1 ) {
+  if (procNameArray.length > 1) {
     procNameArray.splice(0, 1);
   }
   return procNameArray;
@@ -79,12 +85,14 @@ export const getProcedureNames = function(returnValue, opt_workspace) {
 // If returnValue is false, lists all fruitless procedure declarations
 // (defnoreturn) If returnValue is true, lists all fruitful procedure
 // declaraations (defreturn)
-export const getProcedureDeclarationBlocks = function(returnValue,
-    opt_workspace) {
+export const getProcedureDeclarationBlocks = function (
+  returnValue,
+  opt_workspace,
+) {
   const workspace = opt_workspace || Blockly.common.getMainWorkspace();
   const topBlocks = workspace.getTopBlocks(false);
   const blockArray = [];
-  for (let i=0; i<topBlocks.length; i++) {
+  for (let i = 0; i < topBlocks.length; i++) {
     if (topBlocks[i].type == 'procedures_defnoreturn' && !returnValue) {
       blockArray.push(topBlocks[i]);
     } else if (topBlocks[i].type == 'procedures_defreturn' && returnValue) {
@@ -94,12 +102,14 @@ export const getProcedureDeclarationBlocks = function(returnValue,
   return blockArray;
 };
 
-export const getAllProcedureDeclarationBlocksExcept = function(block) {
+export const getAllProcedureDeclarationBlocksExcept = function (block) {
   const topBlocks = block.workspace.getTopBlocks(false);
   const blockArray = [];
-  for (let i=0; i<topBlocks.length; i++) {
-    if (topBlocks[i].type === 'procedures_defnoreturn' ||
-        topBlocks[i].type === 'procedures_defreturn') {
+  for (let i = 0; i < topBlocks.length; i++) {
+    if (
+      topBlocks[i].type === 'procedures_defnoreturn' ||
+      topBlocks[i].type === 'procedures_defreturn'
+    ) {
       if (topBlocks[i] !== block) {
         blockArray.push(topBlocks[i]);
       }
@@ -108,14 +118,18 @@ export const getAllProcedureDeclarationBlocksExcept = function(block) {
   return blockArray;
 };
 
-export const removeProcedureValues = function(name, workspace) {
-  if (workspace && // [lyn, 04/13/14] ensure workspace isn't undefined
-      workspace === Blockly.common.getMainWorkspace()) {
+export const removeProcedureValues = function (name, workspace) {
+  if (
+    workspace && // [lyn, 04/13/14] ensure workspace isn't undefined
+    workspace === Blockly.common.getMainWorkspace()
+  ) {
     const blockArray = workspace.getAllBlocks();
-    for (let i=0; i<blockArray.length; i++) {
+    for (let i = 0; i < blockArray.length; i++) {
       const block = blockArray[i];
-      if (block.type == 'procedures_callreturn' ||
-          block.type == 'procedures_callnoreturn') {
+      if (
+        block.type == 'procedures_callreturn' ||
+        block.type == 'procedures_callnoreturn'
+      ) {
         if (block.getFieldValue('PROCNAME') == name) {
           block.removeProcedureValue();
         }
@@ -133,7 +147,7 @@ export const removeProcedureValues = function(name, workspace) {
  *     field's source block.
  * @return {string} The new, validated name of the block.
  */
-export const renameProcedure = function(newName) {
+export const renameProcedure = function (newName) {
   if (this.getSourceBlock() && this.getSourceBlock().isInFlyout) {
     // Do not rename procedures in flyouts
     return newName;
@@ -147,8 +161,9 @@ export const renameProcedure = function(newName) {
 
   // [lyn, 10/28/13] Prevent two procedures from having the same name.
   const procBlocks = getAllProcedureDeclarationBlocksExcept(
-      this.getSourceBlock());
-  const procNames = procBlocks.map(function(decl) {
+    this.getSourceBlock(),
+  );
+  const procNames = procBlocks.map(function (decl) {
     return decl.getFieldValue('NAME');
   });
   newName = FieldLexicalVariable.nameNotIn(newName, procNames);

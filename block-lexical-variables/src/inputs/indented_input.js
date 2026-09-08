@@ -20,5 +20,8 @@ import * as Blockly from 'blockly/core';
  */
 export class IndentedInput extends Blockly.inputs.ValueInput {}
 
-Blockly.registry.register(Blockly.registry.Type.INPUT, 'indented_input',
-    IndentedInput);
+Blockly.registry.register(
+  Blockly.registry.Type.INPUT,
+  'indented_input',
+  IndentedInput,
+);

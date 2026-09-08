@@ -26,17 +26,20 @@ import '../blocks/variable-get-set';
  */
 export class FieldGlobalFlydown extends FieldFlydown {
   constructor(name, displayLocation) {
-    super(name, true, displayLocation,
-        // rename all references to this global variable
-        LexicalVariable.renameGlobal);
-  };
+    super(
+      name,
+      true,
+      displayLocation,
+      // rename all references to this global variable
+      LexicalVariable.renameGlobal,
+    );
+  }
 }
 
-FieldGlobalFlydown.prototype.fieldCSSClassName =
-    'blocklyFieldParameter';
+FieldGlobalFlydown.prototype.fieldCSSClassName = 'blocklyFieldParameter';
 
 FieldGlobalFlydown.prototype.flyoutCSSClassName =
-    'blocklyFieldParameterFlydown';
+  'blocklyFieldParameterFlydown';
 
 /**
  * Block creation menu for global variables
@@ -44,22 +47,22 @@ FieldGlobalFlydown.prototype.flyoutCSSClassName =
  * block for this parameter field.
  *  @return {!Array.<string>} List of two XML elements.
  **/
-FieldGlobalFlydown.prototype.flydownBlocksXML_ = function() {
+FieldGlobalFlydown.prototype.flydownBlocksXML_ = function () {
   // global name for this parameter field.
   const name = Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX + ' ' + this.getText();
   const getterSetterXML =
-      '<xml>' +
-        '<block type="lexical_variable_get">' +
-          '<field name="VAR">' +
-            name +
-          '</field>' +
-        '</block>' +
-        '<block type="lexical_variable_set">' +
-          '<field name="VAR">' +
-            name +
-          '</field>' +
-        '</block>' +
-      '</xml>';
+    '<xml>' +
+    '<block type="lexical_variable_get">' +
+    '<field name="VAR">' +
+    name +
+    '</field>' +
+    '</block>' +
+    '<block type="lexical_variable_set">' +
+    '<field name="VAR">' +
+    name +
+    '</field>' +
+    '</block>' +
+    '</xml>';
   return getterSetterXML;
 };
 
@@ -70,10 +73,9 @@ FieldGlobalFlydown.prototype.flydownBlocksXML_ = function() {
  * @package
  * @nocollapse
  */
-FieldGlobalFlydown.fromJson = function(options) {
+FieldGlobalFlydown.fromJson = function (options) {
   const name = Blockly.utils.replaceMessageReferences(options['name']);
   return new FieldGlobalFlydown(name);
 };
 
-Blockly.fieldRegistry.register('field_global_flydown',
-    FieldGlobalFlydown);
+Blockly.fieldRegistry.register('field_global_flydown', FieldGlobalFlydown);

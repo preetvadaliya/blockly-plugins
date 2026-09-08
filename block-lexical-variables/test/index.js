@@ -113,7 +113,11 @@ function roundTripXml(workspace) {
   Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(before), workspace);
   const after = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace));
   if (before === after) {
-    console.log('XML round trip OK,', workspace.getAllBlocks().length, 'blocks');
+    console.log(
+      'XML round trip OK,',
+      workspace.getAllBlocks().length,
+      'blocks',
+    );
   } else {
     console.warn('XML round trip MISMATCH');
     console.warn('before:', before);

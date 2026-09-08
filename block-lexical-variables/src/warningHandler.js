@@ -45,9 +45,11 @@ export default class WarningHandler {
     const warningTestArray = block.warnings;
 
     // check if there are any errors
-    for (let i=0; i<errorTestArray.length; i++) {
-      if (errorTestArray[i].func &&
-          errorTestArray[i].func.call(this, block, errorTestArray[i])) {
+    for (let i = 0; i < errorTestArray.length; i++) {
+      if (
+        errorTestArray[i].func &&
+        errorTestArray[i].func.call(this, block, errorTestArray[i])
+      ) {
         if (!block.hasError) {
           block.hasError = true;
         }
@@ -62,9 +64,11 @@ export default class WarningHandler {
       block.hasError = false;
     }
     // if there are no errors, check for warnings
-    for (let i=0; i<warningTestArray.length; i++) {
-      if (warningTestArray[i].func &&
-          warningTestArray[i].func.call(this, block, warningTestArray[i])) {
+    for (let i = 0; i < warningTestArray.length; i++) {
+      if (
+        warningTestArray[i].func &&
+        warningTestArray[i].func.call(this, block, warningTestArray[i])
+      ) {
         if (!block.hasWarning) {
           block.hasWarning = true;
         }
@@ -77,7 +81,7 @@ export default class WarningHandler {
     if (block.hasWarning) {
       block.hasWarning = false;
     }
-  };
+  }
   setError(block, message) {
     block.setWarningText(message, 'warningHandler');
   }
@@ -90,12 +94,12 @@ export default class WarningHandler {
 export class ErrorCheckers {
   // Errors
 
-// Errors indicate that the project will not run
-// Each function returns true if there is an error, and sets the error text on
-// the block
+  // Errors indicate that the project will not run
+  // Each function returns true if there is an error, and sets the error text on
+  // the block
 
-// Check if the block is inside of a variable declaration block, if so, create
-// an error
+  // Check if the block is inside of a variable declaration block, if so, create
+  // an error
   static checkIsInDefinition(block) {
     // Allow property getters as they should be pure.
     const rootBlock = block.getRootBlock();
@@ -106,21 +110,25 @@ export class ErrorCheckers {
     } else {
       return false;
     }
-  };
+  }
 
-
-// Check if the block has an invalid drop down value, if so, create an error
+  // Check if the block has an invalid drop down value, if so, create an error
   static checkDropDownContainsValidValue(block, params) {
     if (block.workspace.isDragging && block.workspace.isDragging()) {
       return false; // wait until the user is done dragging to check validity.
     }
 
     // Don't disable blocks that are being dragged from toolbox or aren't fully rendered
-    if (block.isInFlyout || !block.workspace || block.workspace.isFlyout || !block.rendered) {
+    if (
+      block.isInFlyout ||
+      !block.workspace ||
+      block.workspace.isFlyout ||
+      !block.rendered
+    ) {
       return false;
     }
 
-    for (let i=0; i<params.dropDowns.length; i++) {
+    for (let i = 0; i < params.dropDowns.length; i++) {
       const dropDown = block.getField(params.dropDowns[i]);
       const dropDownList = dropDown.getOptions(false);
       const text = dropDown.getText();
@@ -129,7 +137,7 @@ export class ErrorCheckers {
       if (dropDown.updateMutation) {
         dropDown.updateMutation();
       }
-      for (let k=0; k<dropDownList.length; k++) {
+      for (let k = 0; k < dropDownList.length; k++) {
         if (dropDownList[k][1] === value && value !== ' ') {
           textInDropDown = true;
           // A mismatch in the untranslated value and translated text can be
@@ -145,7 +153,10 @@ export class ErrorCheckers {
         block.workspace.getWarningHandler().setError(block, errorMessage);
         // Disable the block when dropdown has invalid value
         if (block.workspace.disableInvalidBlocks) {
-          block.setDisabledReason(true, Blockly.Msg.ERROR_SELECT_VALID_ITEM_FROM_DROPDOWN);
+          block.setDisabledReason(
+            true,
+            Blockly.Msg.ERROR_SELECT_VALID_ITEM_FROM_DROPDOWN,
+          );
         }
 
         return true;
@@ -153,8 +164,11 @@ export class ErrorCheckers {
     }
     // Re-enable the block if all dropdowns are valid
     if (!block.isEnabled() && block.workspace.disableInvalidBlocks) {
-      block.setDisabledReason(false, Blockly.Msg.ERROR_SELECT_VALID_ITEM_FROM_DROPDOWN);
+      block.setDisabledReason(
+        false,
+        Blockly.Msg.ERROR_SELECT_VALID_ITEM_FROM_DROPDOWN,
+      );
     }
     return false;
-  };
+  }
 }

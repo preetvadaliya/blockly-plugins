@@ -21,10 +21,10 @@ export class FieldNoCheckDropdown extends Blockly.FieldDropdown {
   constructor(...args) {
     // Call superclass constructor
     super(...args);
-  };
+  }
 }
 
-FieldNoCheckDropdown.prototype.doClassValidation_ = function(opt_newValue) {
+FieldNoCheckDropdown.prototype.doClassValidation_ = function (opt_newValue) {
   let isValueValid = false;
   const options = this.getOptions(true);
   for (let i = 0, option; (option = options[i]); i++) {
@@ -50,10 +50,8 @@ FieldNoCheckDropdown.prototype.doClassValidation_ = function(opt_newValue) {
  * @package
  * @nocollapse
  */
-FieldNoCheckDropdown.fromJson = function(options) {
-  return new FieldNoCheckDropdown(options['options'],
-      undefined, options);
+FieldNoCheckDropdown.fromJson = function (options) {
+  return new FieldNoCheckDropdown(options['options'], undefined, options);
 };
 
-Blockly.fieldRegistry.register('field_nocheck_dropdown',
-    FieldNoCheckDropdown);
+Blockly.fieldRegistry.register('field_nocheck_dropdown', FieldNoCheckDropdown);
