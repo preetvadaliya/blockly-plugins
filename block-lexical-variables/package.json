@@ -6,9 +6,12 @@
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint": "eslint .",
-    "predeploy": "blockly-scripts predeploy",
+    "lint:fix": "eslint . --fix",
     "no_prepublishOnly": "npm run clean && npm run build-nolint",
+    "predeploy": "blockly-scripts predeploy",
     "start": "blockly-scripts start",
     "test": "blockly-scripts test"
   },
@@ -46,9 +49,15 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^13.2.0",
     "@blockly/dev-tools": "^13.2.0",
+    "@eslint/js": "^10.0.1",
     "blockly": "^13.2.1",
     "chai": "^4.5.0",
-    "mocha": "^10.2.0"
+    "eslint": "^10.10.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsdoc": "^64.3.6",
+    "globals": "^17.12.0",
+    "mocha": "^10.2.0",
+    "prettier": "^3.9.6"
   },
   "peerDependencies": {
     "blockly": "^13.2.1"
