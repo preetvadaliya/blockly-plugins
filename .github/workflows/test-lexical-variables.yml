@@ -1,6 +1,8 @@
 name: Test block-lexical-variables
 
 on:
+  push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -8,13 +10,22 @@ jobs:
   test-lexical-variables:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        # Blockly 13 declares engines.node >= 22, so 20 is no longer a
+        # supported floor. 24 is the current LTS.
+        node: [22, 24]
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: block-lexical-variables/package-lock.json
 
       - name: Install dependencies
         working-directory: block-lexical-variables
@@ -23,3 +34,10 @@ jobs:
       - name: Run block-lexical-variables tests
         working-directory: block-lexical-variables
         run: npm run test
+
+      # The test build targets Node, so it never exercises the production
+      # webpack config. Building here catches bundling breakage that the
+      # suites cannot see.
+      - name: Build block-lexical-variables
+        working-directory: block-lexical-variables
+        run: npm run build
