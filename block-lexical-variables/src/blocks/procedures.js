@@ -928,17 +928,46 @@ Blockly.Blocks['procedures_callnoreturn'] = {
       }
     }
   },
+  // Argument names as this block currently displays them.
+  //
+  // These are read off the rendered inputs rather than out of arguments_,
+  // which is how this block has always serialized. Both mutationToDom and
+  // saveExtraState go through here so the two formats cannot come to
+  // disagree about what the arguments are.
+  getArgNames_: function() {
+    const names = [];
+    for (let x = 0; this.getInput('ARG' + x); x++) {
+      names.push(this.getInput('ARG' + x).fieldRow[0].getText());
+    }
+    return names;
+  },
   mutationToDom: function() {
     // Save the name and arguments (none of which are editable).
     const container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('name', this.getFieldValue('PROCNAME'));
-    for (let x = 0; this.getInput('ARG' + x); x++) {
+    for (const name of this.getArgNames_()) {
       const parameter = Blockly.utils.xml.createElement('arg');
-      parameter.setAttribute('name',
-          this.getInput('ARG' + x).fieldRow[0].getText());
+      parameter.setAttribute('name', name);
       container.appendChild(parameter);
     }
     return container;
+  },
+  saveExtraState: function() {
+    return {
+      name: this.getFieldValue('PROCNAME'),
+      params: this.getArgNames_(),
+    };
+  },
+  loadExtraState: function(state) {
+    if (isLegacyExtraState(state)) {
+      loadLegacyExtraState(this, state);
+      return;
+    }
+    this.setFieldValue(state.name, 'PROCNAME');
+    this.arguments_ = [...(state.params ?? [])];
+    // Tracking stays on in case this block has argument subblocks and an open
+    // mutator, matching domToMutation.
+    this.setProcedureParameters(this.arguments_, null, true);
   },
   domToMutation: function(xmlElement) {
     // Restore the name and parameters.
@@ -1038,6 +1067,10 @@ Blockly.Blocks['procedures_callreturn'] = {
   Blockly.Blocks.procedures_callnoreturn.setProcedureParameters,
   mutationToDom: Blockly.Blocks.procedures_callnoreturn.mutationToDom,
   domToMutation: Blockly.Blocks.procedures_callnoreturn.domToMutation,
+  // getArgNames_ comes along because both serializers call it.
+  getArgNames_: Blockly.Blocks.procedures_callnoreturn.getArgNames_,
+  saveExtraState: Blockly.Blocks.procedures_callnoreturn.saveExtraState,
+  loadExtraState: Blockly.Blocks.procedures_callnoreturn.loadExtraState,
   renameVar: Blockly.Blocks.procedures_callnoreturn.renameVar,
   customContextMenu:
       Blockly.Blocks.procedures_callnoreturn.customContextMenu,

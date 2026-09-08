@@ -193,6 +193,78 @@ suite('ExtraState', function () {
     });
   });
 
+  suite('procedure callers', function () {
+    setup(function () {
+      this.makeCall = function (type, defType, name, params) {
+        const def = this.workspace.newBlock(defType);
+        def.setFieldValue(name, 'NAME');
+        def.updateParams_(params);
+        const call = this.workspace.newBlock(type);
+        call.setFieldValue(name, 'PROCNAME');
+        call.setProcedureParameters(params, null, true);
+        return call;
+      };
+    });
+
+    test('the name and arguments are saved as an object', function () {
+      const call = this.makeCall(
+        'procedures_callnoreturn',
+        'procedures_defnoreturn',
+        'called',
+        ['a', 'b'],
+      );
+      chai.assert.deepEqual(call.saveExtraState(), {
+        name: 'called',
+        params: ['a', 'b'],
+      });
+    });
+
+    test('XML and JSON report the same arguments', function () {
+      const call = this.makeCall(
+        'procedures_callnoreturn',
+        'procedures_defnoreturn',
+        'called',
+        ['a', 'b'],
+      );
+      const fromXml = [...call.mutationToDom().childNodes].map((n) =>
+        n.getAttribute('name'),
+      );
+      chai.assert.deepEqual(
+        call.saveExtraState().params,
+        fromXml,
+        'the two serializers disagree about the arguments',
+      );
+    });
+
+    test('legacy XML text is still accepted', function () {
+      const call = this.makeCall(
+        'procedures_callnoreturn',
+        'procedures_defnoreturn',
+        'called',
+        ['a'],
+      );
+      call.loadExtraState(
+        '<mutation name="called"><arg name="a"></arg>' +
+          '<arg name="b"></arg></mutation>',
+      );
+      chai.assert.deepEqual(call.arguments_, ['a', 'b']);
+      chai.assert.equal(call.getFieldValue('PROCNAME'), 'called');
+    });
+
+    test('the returning form saves the same way', function () {
+      const call = this.makeCall(
+        'procedures_callreturn',
+        'procedures_defreturn',
+        'asked',
+        ['q'],
+      );
+      chai.assert.deepEqual(call.saveExtraState(), {
+        name: 'asked',
+        params: ['q'],
+      });
+    });
+  });
+
   suite('undo', function () {
     test('undoing a bound rename does not throw', async function () {
       const block = this.workspace.newBlock('local_declaration_statement');
