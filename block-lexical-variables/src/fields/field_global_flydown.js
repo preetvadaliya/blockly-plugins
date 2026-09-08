@@ -51,14 +51,14 @@ FieldGlobalFlydown.prototype.flydownBlocksXML_ = function() {
   const getterSetterXML =
       '<xml>' +
         '<block type="lexical_variable_get">' +
-          '<title name="VAR">' +
+          '<field name="VAR">' +
             name +
-          '</title>' +
+          '</field>' +
         '</block>' +
         '<block type="lexical_variable_set">' +
-          '<title name="VAR">' +
+          '<field name="VAR">' +
             name +
-          '</title>' +
+          '</field>' +
         '</block>' +
       '</xml>';
   return getterSetterXML;
