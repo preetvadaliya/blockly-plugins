@@ -1,0 +1,83 @@
+{
+  "name": "@mit-app-inventor/blockly-indented-input",
+  "version": "0.1.0",
+  "description": "A custom Blockly input type: a socket that accepts a value block but is indented into the block the way a statement body is, with the puzzle tab of an ordinary value input.",
+  "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
+    "build": "blockly-scripts build && npm run build:types",
+    "build:types": "tsc --emitDeclarationOnly",
+    "clean": "blockly-scripts clean",
+    "predeploy": "blockly-scripts predeploy",
+    "start": "blockly-scripts start",
+    "pretest": "npm run build:types",
+    "test": "blockly-scripts test",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepack": "npm run clean && npm run build"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "author": "Preet Vadaliya <preetvadaliya@gmail.com>",
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "input",
+    "custom-input",
+    "renderer",
+    "geras",
+    "expression",
+    "app-inventor"
+  ],
+  "homepage": "https://github.com/mit-cml/blockly-plugins/tree/main/blockly-indented-input#readme",
+  "bugs": {
+    "url": "https://github.com/mit-cml/blockly-plugins/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mit-cml/blockly-plugins.git",
+    "directory": "blockly-indented-input"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@blockly/dev-scripts": "^13.2.0",
+    "@blockly/dev-tools": "^13.2.0",
+    "@eslint/js": "^10.0.1",
+    "blockly": "^13.2.1",
+    "eslint": "^10.10.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsdoc": "^64.3.6",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.6",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.70.0"
+  },
+  "peerDependencies": {
+    "blockly": "^13.2.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
