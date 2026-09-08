@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Cancel an in-progress run when the same branch is pushed again.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Lint and formatting do not vary by Node version, so they run once per
+  # package rather than once per package and version.
+  quality:
+    name: Lint and format (${{ matrix.package }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [block-lexical-variables, blockly-indented-input]
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ${{ matrix.package }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.package }}
+        run: npm ci
+
+      - name: Lint
+        working-directory: ${{ matrix.package }}
+        run: npm run lint
+
+      - name: Check formatting
+        working-directory: ${{ matrix.package }}
+        run: npm run format:check
+
+      # `build:types`, not `typecheck`: `tsc --noEmit` returns before
+      # declaration diagnostics run, so it cannot see the TS4xxx errors that
+      # declaration emit surfaces.
+      - name: Typecheck
+        working-directory: ${{ matrix.package }}
+        run: npm run build:types
+
+  test:
+    name: Test ${{ matrix.package }} on Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [block-lexical-variables, blockly-indented-input]
+        # Blockly 13 declares engines.node >= 22, so 20 is no longer a
+        # supported floor. 24 is the current LTS.
+        node: [22, 24]
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: ${{ matrix.package }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.package }}
+        run: npm ci
+
+      - name: Test
+        working-directory: ${{ matrix.package }}
+        run: npm test
+
+      # The test build targets Node, so it never exercises the production
+      # webpack config. Building here catches bundling breakage that the
+      # suites cannot see.
+      - name: Build
+        working-directory: ${{ matrix.package }}
+        run: npm run build
