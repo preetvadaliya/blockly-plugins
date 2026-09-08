@@ -112,20 +112,20 @@ ProcedureDatabase.prototype.getMenuItems = function(returnValue) {
  */
 ProcedureDatabase.prototype.getDeclarationBlocks =
     function(returnValue) {
-      return Blockly.utils.object.values(
+      return Object.values(
           returnValue ? this.returnProcedures_ : this.voidProcedures_);
     };
 
 ProcedureDatabase.prototype.getDeclarationsBlocksExcept = function(block) {
   const blockArray = [];
-  Blockly.utils.values(this.procedures_).forEach(function(b) {
+  Object.values(this.procedures_).forEach(function(b) {
     if (b !== block) blockArray.push(b);
   });
   return blockArray;
 };
 
 ProcedureDatabase.prototype.getAllDeclarationNames = function() {
-  return Blockly.utils.values(this.procedures_)
+  return Object.values(this.procedures_)
       .map(function(block) {
         return block.getFieldValue('NAME');
       });
