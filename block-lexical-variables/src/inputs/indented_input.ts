@@ -6,10 +6,9 @@ import * as Blockly from 'blockly/core';
 
 /**
  * The IndentedInput represents results of computations that run in a
- * statement-like rather than a value-lke context. In particular, it is useful
- * for representing function bodies and macros that compute values.
- */
-/**
+ * statement-like rather than a value-like context. In particular, it is
+ * useful for representing function bodies and macros that compute values.
+ *
  * The class body is empty on purpose. `ValueInput`'s own constructor already
  * sets `name`, sets `type` to `inputTypes.VALUE`, and builds the
  * `INPUT_VALUE` connection, so there is nothing left for a subclass to do.
