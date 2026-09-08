@@ -7,7 +7,36 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Lint and formatting do not vary by Node version, so they run once rather
+  # than once per matrix entry.
+  quality:
+    name: Lint and format
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: block-lexical-variables/package-lock.json
+
+      - name: Install dependencies
+        working-directory: block-lexical-variables
+        run: npm ci
+
+      - name: Lint
+        working-directory: block-lexical-variables
+        run: npm run lint
+
+      - name: Check formatting
+        working-directory: block-lexical-variables
+        run: npm run format:check
+
   test-lexical-variables:
+    name: Test on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
 
     strategy:
