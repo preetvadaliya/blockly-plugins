@@ -10,18 +10,16 @@ import * as Blockly from 'blockly/core';
  * statement-like rather than a value-lke context. In particular, it is useful
  * for representing function bodies and macros that compute values.
  */
-export class IndentedInput extends Blockly.inputs.ValueInput {
-  /**
-   * Construct a new IndentedInput.
-   * @param {string} name the name of the input
-   * @param {Blockly.Block} block the block the input belongs to
-   */
-  constructor(name, block) {
-    super(name, block);
-    this.connection = this.makeConnection(Blockly.ConnectionType.INPUT_VALUE);
-    this.type = Blockly.inputs.inputTypes.VALUE;
-  }
-}
+/**
+ * The class body is empty on purpose. `ValueInput`'s own constructor already
+ * sets `name`, sets `type` to `inputTypes.VALUE`, and builds the
+ * `INPUT_VALUE` connection, so there is nothing left for a subclass to do.
+ *
+ * What the subclass provides is a distinct class, and that is the entire
+ * mechanism: `RenderInfo.addInput_` dispatches on `instanceof`, so being
+ * nominally different is what lets the renderer draw this one indented.
+ */
+export class IndentedInput extends Blockly.inputs.ValueInput {}
 
 Blockly.registry.register(Blockly.registry.Type.INPUT, 'indented_input',
     IndentedInput);
