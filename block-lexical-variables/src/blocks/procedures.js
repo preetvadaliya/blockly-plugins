@@ -470,8 +470,9 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     if (!LexicalVariable.stringListsEqual(oldParams, newParams)) {
       this.updateParams_(newParams);
       // Update the mutator's variables if the mutator is open.
-      if (this.mutator.isVisible()) {
-        const blocks = this.mutator.getWorkspace().getAllBlocks();
+      const mutatorIcon = this.getIcon(Blockly.icons.MutatorIcon.TYPE);
+      if (mutatorIcon && mutatorIcon.bubbleIsVisible()) {
+        const blocks = mutatorIcon.getWorkspace().getAllBlocks();
         for (let x = 0, block; block = blocks[x]; x++) {
           if (block.type == 'procedures_mutatorarg') {
             const oldName = block.getFieldValue('NAME');
