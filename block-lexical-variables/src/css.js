@@ -1,7 +1,17 @@
 'use strict';
 
-const cssNode = document.createElement('style');
-document.head.appendChild(cssNode);
+/**
+ * The style element holding this plugin's rules.
+ *
+ * Created on first use rather than at module scope. Touching `document` while
+ * the module is evaluating means merely importing the plugin throws anywhere
+ * there is no DOM — Node, SSR, or a test runner — even when nothing is ever
+ * rendered. Creating it here keeps the single-element behaviour while making
+ * the import side-effect free.
+ *
+ * @type {?HTMLStyleElement}
+ */
+let cssNode = null;
 
 /**
  * Register our extra CSS with Blockly.
@@ -9,6 +19,10 @@ document.head.appendChild(cssNode);
  * @param {string} selector The CSS selector for the Blockly workspace.
  */
 export function registerCss(selector) {
+  if (!cssNode) {
+    cssNode = document.createElement('style');
+    document.head.appendChild(cssNode);
+  }
   cssNode.textContent = `
   ${selector}  .blocklyFieldParameter>rect {
     fill: rgb(222, 143, 108);
