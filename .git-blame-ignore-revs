@@ -1,0 +1,9 @@
+# Revisions that changed formatting only, and are noise in blame.
+#
+# Configure git to use this file:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+#
+# GitHub reads it automatically.
+
+# Format all sources with Prettier
+380ae7c3784d0c9db8c91a66bea5c453d8bfd6d2
