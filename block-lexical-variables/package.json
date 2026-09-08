@@ -5,19 +5,17 @@
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
-    "build-nolint": "blockly-scripts build --skip-lint",
     "clean": "blockly-scripts clean",
     "lint": "eslint .",
     "predeploy": "blockly-scripts predeploy",
     "no_prepublishOnly": "npm run clean && npm run build-nolint",
-    "start": "blockly-scripts start --skip-lint",
+    "start": "blockly-scripts start",
     "test": "blockly-scripts test"
   },
   "main": "./dist/index.js",
   "unpkg": "./dist/index.js",
   "exports": {
-    ".": "./dist/index.js",
-    "./core": "./dist/core.js"
+    ".": "./dist/index.js"
   },
   "author": "",
   "keywords": [
