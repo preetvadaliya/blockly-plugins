@@ -91,6 +91,7 @@ import {FieldNoCheckDropdown} from '../fields/field_nocheck_dropdown.js';
 import * as Utilities from '../utilities.js';
 import * as Shared from '../shared.js';
 import {Substitution} from '../substitution.js'
+import {NameSet} from '../nameSet.js';
 import '../msg.js';
 
 Blockly.Blocks['procedures_defnoreturn'] = {
