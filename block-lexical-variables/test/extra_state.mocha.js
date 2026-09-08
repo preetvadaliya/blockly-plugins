@@ -141,6 +141,58 @@ suite('ExtraState', function () {
     });
   });
 
+  suite('procedure definitions', function () {
+    test('parameters are saved as an object', function () {
+      const block = this.workspace.newBlock('procedures_defnoreturn');
+      block.updateParams_(['one', 'two']);
+      chai.assert.deepEqual(block.saveExtraState(), {params: ['one', 'two']});
+    });
+
+    test('horizontal layout writes no orientation key', function () {
+      const block = this.workspace.newBlock('procedures_defnoreturn');
+      block.horizontalParameters = true;
+      block.updateParams_(['one']);
+      chai.assert.notProperty(
+        block.saveExtraState(),
+        'verticalParameters',
+        'absence is what means horizontal, matching the XML',
+      );
+    });
+
+    test('vertical layout is recorded', function () {
+      const block = this.workspace.newBlock('procedures_defnoreturn');
+      block.horizontalParameters = false;
+      block.updateParams_(['one']);
+      chai.assert.deepEqual(block.saveExtraState(), {
+        params: ['one'],
+        verticalParameters: true,
+      });
+    });
+
+    test('loading restores the orientation and the parameters', function () {
+      const block = this.workspace.newBlock('procedures_defnoreturn');
+      block.loadExtraState({params: ['a', 'b'], verticalParameters: true});
+      chai.assert.deepEqual(block.arguments_, ['a', 'b']);
+      chai.assert.isFalse(block.horizontalParameters);
+    });
+
+    test('legacy XML with vertical_parameters is still accepted', function () {
+      const block = this.workspace.newBlock('procedures_defnoreturn');
+      block.loadExtraState(
+        '<mutation vertical_parameters="true">' +
+          '<arg name="legacyA"></arg><arg name="legacyB"></arg></mutation>',
+      );
+      chai.assert.deepEqual(block.arguments_, ['legacyA', 'legacyB']);
+      chai.assert.isFalse(block.horizontalParameters);
+    });
+
+    test('the returning form saves the same way', function () {
+      const block = this.workspace.newBlock('procedures_defreturn');
+      block.updateParams_(['q']);
+      chai.assert.deepEqual(block.saveExtraState(), {params: ['q']});
+    });
+  });
+
   suite('undo', function () {
     test('undoing a bound rename does not throw', async function () {
       const block = this.workspace.newBlock('local_declaration_statement');

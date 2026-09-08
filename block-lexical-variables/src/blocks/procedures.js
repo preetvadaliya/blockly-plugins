@@ -92,6 +92,7 @@ import * as Utilities from '../utilities.js';
 import * as Shared from '../shared.js';
 import {Substitution} from '../substitution.js'
 import {NameSet} from '../nameSet.js';
+import {isLegacyExtraState, loadLegacyExtraState} from '../extra_state.js';
 import '../msg.js';
 
 Blockly.Blocks['procedures_defnoreturn'] = {
@@ -366,6 +367,25 @@ Blockly.Blocks['procedures_defnoreturn'] = {
         xmlElement.getAttribute('vertical_parameters') !== 'true';
     this.updateParams_(params);
   },
+  saveExtraState: function() {
+    const state = {params: [...this.arguments_]};
+    // Recorded only when vertical, mirroring the XML, where the absence of
+    // the attribute is what means horizontal.
+    if (!this.horizontalParameters) {
+      state.verticalParameters = true;
+    }
+    return state;
+  },
+  loadExtraState: function(state) {
+    if (isLegacyExtraState(state)) {
+      loadLegacyExtraState(this, state);
+      return;
+    }
+    // Assigned before updateParams_, which reads it to decide how to lay the
+    // parameters out. domToMutation orders these the same way.
+    this.horizontalParameters = !state.verticalParameters;
+    this.updateParams_(state.params ?? []);
+  },
   decompose: function(workspace) {
     const containerBlock = workspace.newBlock('procedures_mutatorcontainer');
     containerBlock.initSvg();
@@ -574,6 +594,10 @@ Blockly.Blocks['procedures_defreturn'] = {
       Blockly.Blocks.procedures_defnoreturn.setParameterOrientation,
   mutationToDom: Blockly.Blocks.procedures_defnoreturn.mutationToDom,
   domToMutation: Blockly.Blocks.procedures_defnoreturn.domToMutation,
+  // Aliased as a pair; picking up only one would leave this block XML-only
+  // with nothing to report the mismatch.
+  saveExtraState: Blockly.Blocks.procedures_defnoreturn.saveExtraState,
+  loadExtraState: Blockly.Blocks.procedures_defnoreturn.loadExtraState,
   decompose: Blockly.Blocks.procedures_defnoreturn.decompose,
   compose: Blockly.Blocks.procedures_defnoreturn.compose,
   dispose: Blockly.Blocks.procedures_defnoreturn.dispose,
